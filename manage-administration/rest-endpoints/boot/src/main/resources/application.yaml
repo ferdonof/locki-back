@@ -1,0 +1,34 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+spring:
+  application:
+    name: locki
+  datasource:
+    url: jdbc:postgresql://localhost:5435/lockidb
+    username: locki
+    password: locki
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  liquibase:
+    change-log: classpath:db/liquibase/changelog.xml
+
+
+logging:
+  level:
+    root: WARN
+    com.ferdonof: INFO
+    org.springframework: INFO
+    liquibase: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
