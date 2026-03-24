@@ -1,0 +1,53 @@
+name: Sync main to develop
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  create-sync-pr:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create sync PR from main to develop
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          EXISTING=$(gh pr list \
+            --head "main" \
+            --base develop \
+            --state open \
+            --json number \
+            --jq '.[0].number')
+
+          if [ -n "$EXISTING" ]; then
+            echo "Existing PR #${EXISTING} from main → develop. Skipping..."
+            exit 0
+          fi
+
+          DIFF=$(git log origin/develop..origin/main --oneline)
+
+          if [ -z "$DIFF" ]; then
+            echo "develop already synchronized with main. PR is not necessary."
+            exit 0
+          fi
+
+          gh pr create \
+            --head "main" \
+            --base "develop" \
+            --title "chore: sync main → develop" \
+            --body "Synchro PR automatically create after merge \`main\`.
+
+          ### Included commits
+          \`\`\`
+          ${DIFF}
+          \`\`\`"
+
+          echo "✓ Synchronization PR created: main → develop"
