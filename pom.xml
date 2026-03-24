@@ -23,6 +23,10 @@
 	</developers>
 	<modules>
 		<module>manage-administration</module>
+        <module>manage-administration/rest-endpoints/users-rest-endpoints</module>
+		<module>manage-administration/rest-endpoints/lockers-rest-endpoints</module>
+		<module>manage-administration/rest-endpoints/racks-rest-endpoints</module>
+		<module>manage-administration/rest-endpoints/locations-rest-endpoints</module>
 	</modules>
 	<scm>
 		<connection/>
@@ -83,18 +87,8 @@
 					<version>${postgresql.version}</version>
 					<scope>runtime</scope>
 				</dependency>
-				<dependency>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-test</artifactId>
-					<version>${spring-boot.version}</version>
-					<scope>test</scope>
-				</dependency>
-				<dependency>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-testcontainers</artifactId>
-					<version>${spring-boot.version}</version>
-					<scope>test</scope>
-				</dependency>
+
+
 				<dependency>
 					<groupId>org.springframework.kafka</groupId>
 					<artifactId>spring-kafka-test</artifactId>
@@ -125,6 +119,20 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<version>${spring-boot.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-testcontainers</artifactId>
+			<version>${spring-boot.version}</version>
+			<scope>test</scope>
+		</dependency>
+
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>

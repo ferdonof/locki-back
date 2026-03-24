@@ -7,18 +7,10 @@
         <groupId>com.ferdonof</groupId>
         <artifactId>locki</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
+        <relativePath>../../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>manage-administration</artifactId>
-    <name>${project.groupId}:${project.artifactId}</name>
-    <packaging>pom</packaging>
-    <modules>
-        <module>application</module>
-        <module>domain</module>
-        <module>infrastructure</module>
-        <module>rest-endpoints</module>
-    </modules>
+    <artifactId>locations-rest-endpoints</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

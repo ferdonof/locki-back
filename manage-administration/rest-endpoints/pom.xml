@@ -7,13 +7,13 @@
         <groupId>com.ferdonof</groupId>
         <artifactId>manage-administration</artifactId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>manage-administration-rest-endpoints</artifactId>
     <packaging>pom</packaging>
     <name>${project.groupId}:${project.artifactId}</name>
     <modules>
-        <module>create-user-endpoint</module>
         <module>boot</module>
     </modules>
 

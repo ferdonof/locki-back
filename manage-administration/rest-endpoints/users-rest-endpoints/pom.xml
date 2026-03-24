@@ -5,11 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.ferdonof</groupId>
-        <artifactId>manage-administration-rest-endpoints</artifactId>
+        <artifactId>locki</artifactId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>create-user-endpoint</artifactId>
+    <artifactId>users-rest-endpoints</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
