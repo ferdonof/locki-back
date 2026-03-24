@@ -5,17 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.ferdonof</groupId>
-        <artifactId>manage-administration</artifactId>
+        <artifactId>manage-administration-rest-endpoints</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>manage-administration-rest-endpoints</artifactId>
-    <packaging>pom</packaging>
-    <name>${project.groupId}:${project.artifactId}</name>
-    <modules>
-        <module>create-user-endpoint</module>
-        <module>boot</module>
-    </modules>
+    <artifactId>create-user-endpoint</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
