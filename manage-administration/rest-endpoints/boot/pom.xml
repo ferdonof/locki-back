@@ -7,6 +7,7 @@
         <groupId>com.ferdonof</groupId>
         <artifactId>manage-administration-rest-endpoints</artifactId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>boot</artifactId>
@@ -18,16 +19,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>com.ferdonof</groupId>
-            <artifactId>manage-administration-application</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.ferdonof</groupId>
-            <artifactId>manage-administration-infrastructure-repository-psql</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
 
         <dependency>
             <groupId>com.ferdonof</groupId>
