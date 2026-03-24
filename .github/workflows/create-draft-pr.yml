@@ -1,0 +1,45 @@
+name: Create Draft PR
+
+on:
+  push:
+    branches-ignore:
+      - main
+      - develop
+
+jobs:
+  create-draft-pr:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create draft PR to develop
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH="${{ github.ref_name }}"
+
+          # Check if there is an open PR for this branch
+          EXISTING=$(gh pr list \
+            --head "$BRANCH" \
+            --base develop \
+            --state open \
+            --json number \
+            --jq '.[0].number')
+
+          if [ -n "$EXISTING" ]; then
+            echo "Existing PR #${EXISTING} for branch ${BRANCH}. Skipping..."
+            exit 0
+          fi
+
+          gh pr create \
+            --head "$BRANCH" \
+            --base develop \
+            --title "Draft: ${BRANCH}" \
+            --body "PR automatically created for branch \`${BRANCH}\`." \
+            --draft
+
+          echo "✓ Draft PR created: ${BRANCH} → develop"
