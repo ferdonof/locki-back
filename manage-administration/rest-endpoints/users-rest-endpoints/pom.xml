@@ -10,7 +10,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>boot</artifactId>
+    <artifactId>users-rest-endpoints</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -21,23 +21,11 @@
     <dependencies>
         <dependency>
             <groupId>com.ferdonof</groupId>
-            <artifactId>users-rest-endpoints</artifactId>
+            <artifactId>manage-administration-application</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>postgresql</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+    </dependencies>
 
 </project>

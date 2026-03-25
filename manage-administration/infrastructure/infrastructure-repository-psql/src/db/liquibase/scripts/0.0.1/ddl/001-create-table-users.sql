@@ -7,13 +7,15 @@ CREATE TABLE users (
                       name VARCHAR(100) NOT NULL,
                       email VARCHAR(150) NOT NULL,
                       phone VARCHAR(50) NOT NULL,
-                      version INT4 NOT NULL DEFAULT 1,
-                      created_at TIMESTAMPTZ(6) NOT NULL,
-                      updated_at TIMESTAMPTZ(6)
+                      version BIGINT NOT NULL DEFAULT 1,
+                      created_at TIMESTAMP(6) WITH TIME ZONE NOT NULL,
+                      updated_at TIMESTAMP(6) WITH TIME ZONE
 );
 
 CREATE INDEX idx_users_email ON users (email);
+ALTER TABLE users ADD CONSTRAINT uk_users_email UNIQUE (email);
 
 --rollback DROP TABLE users;
 --rollback DROP INDEX idx_users_email;
+--rollback ALTER TABLE users DROP CONSTRAINT uk_users_email;
 
