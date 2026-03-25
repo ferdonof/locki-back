@@ -20,6 +20,12 @@ import com.ferdonof.locki.entities.UserEntity;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class UserRepositoryTestIT {
 
+	public static final String NAME = "John Doe";
+
+	public static final String EMAIL = "john@example.com";
+
+	public static final String PHONE = "+123456789";
+
 	@Autowired
 	private UserRepository userRepository;
 
@@ -33,7 +39,7 @@ class UserRepositoryTestIT {
 
 	@Test
 	void shouldSaveAndFindUserById() {
-		final UserEntity user = UserEntity.builder().name("John Doe").email("john@example.com").phone("+123456789").build();
+		final UserEntity user = UserEntity.builder().name(NAME).email(EMAIL).phone(PHONE).build();
 
 		final UserEntity saved = this.userRepository.save(user);
 		this.entityManager.flush();
@@ -45,9 +51,9 @@ class UserRepositoryTestIT {
 		final Optional<UserEntity> found = this.userRepository.findById(saved.getId());
 
 		assertThat(found).isPresent();
-		assertThat(found.get().getName()).isEqualTo("John Doe");
-		assertThat(found.get().getEmail()).isEqualTo("john@example.com");
-		assertThat(found.get().getPhone()).isEqualTo("+123456789");
+		assertThat(found.get().getName()).isEqualTo(NAME);
+		assertThat(found.get().getEmail()).isEqualTo(EMAIL);
+		assertThat(found.get().getPhone()).isEqualTo(PHONE);
 	}
 
 	@Test
