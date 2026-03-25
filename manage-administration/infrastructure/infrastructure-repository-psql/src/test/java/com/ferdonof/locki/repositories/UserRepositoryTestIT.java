@@ -1,10 +1,6 @@
 package com.ferdonof.locki.repositories;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.Optional;
-import java.util.UUID;
-
+import com.ferdonof.locki.entities.UserEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +9,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.ActiveProfiles;
 
-import com.ferdonof.locki.entities.UserEntity;
+import java.util.Optional;
+import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @ActiveProfiles("test")
@@ -38,7 +37,7 @@ class UserRepositoryTestIT {
 	}
 
 	@Test
-	void shouldSaveAndFindUserById() {
+	void whenSaveEntity_thenSaveAndFindUserById() {
 		final UserEntity user = UserEntity.builder().name(NAME).email(EMAIL).phone(PHONE).build();
 
 		final UserEntity saved = this.userRepository.save(user);
@@ -57,7 +56,7 @@ class UserRepositoryTestIT {
 	}
 
 	@Test
-	void shouldReturnEmptyWhenUserNotFound() {
+	void whenUserNotFound_thenReturnEmpty() {
 		final Optional<UserEntity> found = this.userRepository.findById(UUID.randomUUID());
 
 		assertThat(found).isEmpty();
@@ -65,7 +64,8 @@ class UserRepositoryTestIT {
 
 	@Test
 	void shouldDeleteUser() {
-		final UserEntity user = UserEntity.builder().name("Jane Doe").email("jane@example.com").phone("+987654321").build();
+		final UserEntity user = UserEntity.builder().name("Jane Doe").email("jane@example.com").phone("+987654321")
+				.build();
 
 		final UserEntity saved = this.userRepository.save(user);
 
@@ -75,10 +75,12 @@ class UserRepositoryTestIT {
 	}
 
 	@Test
-	void shouldFindAllUsers() {
-		final UserEntity user1 = UserEntity.builder().name("User One").email("user1@example.com").phone("+111111111").build();
+	void whenInsertedEntitiesAreOk_thenFindAllUsers() {
+		final UserEntity user1 = UserEntity.builder().name("User One").email("user1@example.com").phone("+111111111")
+				.build();
 
-		final UserEntity user2 = UserEntity.builder().name("User Two").email("user2@example.com").phone("+222222222").build();
+		final UserEntity user2 = UserEntity.builder().name("User Two").email("user2@example.com").phone("+222222222")
+				.build();
 
 		this.userRepository.save(user1);
 		this.userRepository.save(user2);
