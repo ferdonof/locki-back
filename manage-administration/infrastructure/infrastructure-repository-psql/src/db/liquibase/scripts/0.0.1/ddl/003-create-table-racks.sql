@@ -7,8 +7,8 @@ CREATE TABLE racks (
                        status VARCHAR(15) NOT NULL,
                        location_id UUID,
                        version BIGINT NOT NULL DEFAULT 1,
-                       created_at TIMESTAMPTZ(6) NOT NULL,
-                       updated_at TIMESTAMPTZ(6)
+                       created_at TIMESTAMP(6) WITH TIME ZONE NOT NULL,
+                       updated_at TIMESTAMP(6) WITH TIME ZONE
 );
 
 

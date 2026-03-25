@@ -8,8 +8,8 @@ CREATE TABLE users (
                       email VARCHAR(150) NOT NULL,
                       phone VARCHAR(50) NOT NULL,
                       version BIGINT NOT NULL DEFAULT 1,
-                      created_at TIMESTAMPTZ(6) NOT NULL,
-                      updated_at TIMESTAMPTZ(6)
+                      created_at TIMESTAMP(6) WITH TIME ZONE NOT NULL,
+                      updated_at TIMESTAMP(6) WITH TIME ZONE
 );
 
 CREATE INDEX idx_users_email ON users (email);
