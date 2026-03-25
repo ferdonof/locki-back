@@ -23,6 +23,10 @@
 	</developers>
 	<modules>
 		<module>manage-administration</module>
+        <module>manage-administration/rest-endpoints/users-rest-endpoints</module>
+		<module>manage-administration/rest-endpoints/lockers-rest-endpoints</module>
+		<module>manage-administration/rest-endpoints/racks-rest-endpoints</module>
+		<module>manage-administration/rest-endpoints/locations-rest-endpoints</module>
 	</modules>
 	<scm>
 		<connection/>
@@ -35,6 +39,12 @@
 		<spring-boot.version>3.5.12</spring-boot.version>
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
 		<postgresql.version>42.7.10</postgresql.version>
+		<openapigenerator.version>7.0.1</openapigenerator.version>
+
+		<admin-rest-spec.version>1.1.1</admin-rest-spec.version>
+		<jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
+		<swagger-annotations.version>2.2.12</swagger-annotations.version>
+		<jakarta.validation-api.version>3.1.1</jakarta.validation-api.version>
 	</properties>
 
 
@@ -83,18 +93,8 @@
 					<version>${postgresql.version}</version>
 					<scope>runtime</scope>
 				</dependency>
-				<dependency>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-test</artifactId>
-					<version>${spring-boot.version}</version>
-					<scope>test</scope>
-				</dependency>
-				<dependency>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-testcontainers</artifactId>
-					<version>${spring-boot.version}</version>
-					<scope>test</scope>
-				</dependency>
+
+
 				<dependency>
 					<groupId>org.springframework.kafka</groupId>
 					<artifactId>spring-kafka-test</artifactId>
@@ -113,6 +113,26 @@
 					<version>${testcontainers.version}</version>
 					<scope>test</scope>
 				</dependency>
+
+				<!-- OpenAPI Generator dependencies -->
+				<dependency>
+					<groupId>org.openapitools</groupId>
+					<artifactId>jackson-databind-nullable</artifactId>
+					<version>${jackson-databind-nullable.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>io.swagger.core.v3</groupId>
+					<artifactId>swagger-annotations</artifactId>
+					<version>${swagger-annotations.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>jakarta.validation</groupId>
+					<artifactId>jakarta.validation-api</artifactId>
+					<version>${jakarta.validation-api.version}</version>
+				</dependency>
+
+
+				<!-- custom dependencies -->
 			</dependencies>
 		</dependencyManagement>
 
@@ -125,6 +145,20 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<version>${spring-boot.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-testcontainers</artifactId>
+			<version>${spring-boot.version}</version>
+			<scope>test</scope>
+		</dependency>
+
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>

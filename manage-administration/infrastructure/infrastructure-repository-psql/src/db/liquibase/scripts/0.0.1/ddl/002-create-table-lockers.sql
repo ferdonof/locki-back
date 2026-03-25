@@ -8,9 +8,9 @@ CREATE TABLE lockers (
                        status VARCHAR(15) NOT NULL,
                        latch_status VARCHAR(15) NOT NULL,
                        user_id UUID,
-                       version INT4 NOT NULL DEFAULT 1,
-                       created_at TIMESTAMPTZ(6) NOT NULL,
-                       updated_at TIMESTAMPTZ(6)
+                       version BIGINT NOT NULL DEFAULT 1,
+                       created_at TIMESTAMP(6) WITH TIME ZONE NOT NULL,
+                       updated_at TIMESTAMP(6) WITH TIME ZONE
 );
 
 

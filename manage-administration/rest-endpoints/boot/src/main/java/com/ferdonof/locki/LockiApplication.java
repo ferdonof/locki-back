@@ -1,4 +1,4 @@
-package com.ferndonof.locki;
+package com.ferdonof.locki;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
