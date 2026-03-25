@@ -111,7 +111,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${project.build.directory}/classes/external-api/admin-client/rest/META-INF/specs/openapi-rest.yml</inputSpec>
+                            <inputSpec>${project.build.directory}/classes/external-api/admin-client/rest/specs/openapi-rest.yml</inputSpec>
                             <generatorName>spring</generatorName>
                             <modelPackage>com.ferdonof.locki.external.admin.dto</modelPackage>
                             <generateSupportingFiles>false</generateSupportingFiles>
