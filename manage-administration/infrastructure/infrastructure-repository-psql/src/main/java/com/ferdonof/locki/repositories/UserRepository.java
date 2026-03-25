@@ -1,7 +1,10 @@
 package com.ferdonof.locki.repositories;
 
-import com.ferdonof.locki.entities.UserEntity;
+import java.util.UUID;
+
 import org.springframework.data.repository.CrudRepository;
 
-public interface UserRepository extends CrudRepository<UserEntity, Long> {
+import com.ferdonof.locki.entities.UserEntity;
+
+public interface UserRepository extends CrudRepository<UserEntity, UUID> {
 }
