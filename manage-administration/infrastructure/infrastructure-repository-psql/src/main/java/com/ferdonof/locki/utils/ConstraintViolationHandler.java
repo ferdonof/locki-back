@@ -20,9 +20,10 @@ public final class ConstraintViolationHandler {
 		try {
 			return operation.get();
 		} catch (final DataIntegrityViolationException ex) {
-      final List<String> constraintNames = constraints.stream().map(ConstraintValidationsConstants::getValue).toList();
 			if (ex.getCause() instanceof ConstraintViolationException cve
-					&& constraintNames.contains(cve.getConstraintName())) {
+					&& constraints.stream()
+							.map(ConstraintValidationsConstants::getValue)
+							.anyMatch(name -> name.equalsIgnoreCase(cve.getConstraintName()))) {
 				throw exceptionSupplier.get();
 			}
 			throw ex;
