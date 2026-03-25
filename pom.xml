@@ -39,6 +39,13 @@
 		<spring-boot.version>3.5.12</spring-boot.version>
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
 		<postgresql.version>42.7.10</postgresql.version>
+		<openapigenerator.version>7.0.1</openapigenerator.version>
+
+		<admin-rest-spec.version>1.0.0-SNAPSHOT</admin-rest-spec.version>
+		<jackson-databind.version>2.21.1</jackson-databind.version>
+		<jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
+		<swagger-annotations.version>2.2.12</swagger-annotations.version>
+		<jakarta.validation-api.version>3.1.1</jakarta.validation-api.version>
 	</properties>
 
 
@@ -107,6 +114,31 @@
 					<version>${testcontainers.version}</version>
 					<scope>test</scope>
 				</dependency>
+
+				<!-- OpenAPI Generator dependencies -->
+				<dependency>
+					<groupId>com.fasterxml.jackson.core</groupId>
+					<artifactId>jackson-databind</artifactId>
+					<version>${jackson-databind.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>org.openapitools</groupId>
+					<artifactId>jackson-databind-nullable</artifactId>
+					<version>${jackson-databind-nullable.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>io.swagger.core.v3</groupId>
+					<artifactId>swagger-annotations</artifactId>
+					<version>${swagger-annotations.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>jakarta.validation</groupId>
+					<artifactId>jakarta.validation-api</artifactId>
+					<version>${jakarta.validation-api.version}</version>
+				</dependency>
+
+
+				<!-- custom dependencies -->
 			</dependencies>
 		</dependencyManagement>
 

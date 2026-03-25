@@ -26,4 +26,30 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.ferdonof</groupId>
+                <artifactId>manage-administration-domain</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ferdonof</groupId>
+                <artifactId>manage-administration-application</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ferdonof</groupId>
+                <artifactId>manage-administration-infrastructure-repository-psql</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ferdonof.locki</groupId>
+                <artifactId>admin-rest-spec</artifactId>
+                <version>${admin-rest-spec.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
 </project>

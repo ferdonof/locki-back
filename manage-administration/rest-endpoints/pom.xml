@@ -27,18 +27,111 @@
         <dependency>
             <groupId>com.ferdonof</groupId>
             <artifactId>manage-administration-domain</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.ferdonof</groupId>
             <artifactId>manage-administration-application</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.ferdonof</groupId>
             <artifactId>manage-administration-infrastructure-repository-psql</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ferdonof.locki</groupId>
+            <artifactId>admin-rest-spec</artifactId>
+            <version>${admin-rest-spec.version}</version>
+        </dependency>
+
+
+        <!-- DEPENDENCIES FOR REST ENDPOINTS -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
         </dependency>
     </dependencies>
 
+
+    <build>
+        <plugins>
+            <!-- UNPACK APIs -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <!-- UNPACK ITEM API -->
+                    <execution>
+                        <id>unpack-incidence-rest-api</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.ferdonof.locki</groupId>
+                                    <artifactId>admin-rest-spec</artifactId>
+                                    <version>${admin-rest-spec.version}</version>
+                                    <type>jar</type>
+                                    <overWrite>false</overWrite>
+                                    <includes>**/*.yml</includes>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/classes/external-api/admin-client/rest</outputDirectory>
+                            <overWriteReleases>true</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- GENERATE REST APIs -->
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>${openapigenerator.version}</version>
+                <executions>
+                    <!-- GENERATE ADMIN API -->
+                    <execution>
+                        <id>generate-admin-client-rest-api</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.build.directory}/classes/external-api/admin-client/rest/META-INF/specs/openapi-rest.yml</inputSpec>
+                            <generatorName>spring</generatorName>
+                            <modelPackage>com.ferdonof.locki.external.admin.dto</modelPackage>
+                            <generateSupportingFiles>false</generateSupportingFiles>
+                            <skipOperationExample>true</skipOperationExample>
+                            <generateApis>false</generateApis>
+                            <generateModelTests>false</generateModelTests>
+                            <generateApiTests>false</generateApiTests>
+                            <modelNameSuffix>DTO</modelNameSuffix>
+                            <library>spring-cloud</library>
+                            <configOptions>
+                                <sourceFolder>src/gen/java/main</sourceFolder>
+                                <dateLibrary>java8</dateLibrary>
+                                <useOptional>true</useOptional>
+                                <serializableModel>true</serializableModel>
+                                <useSpringBoot3>true</useSpringBoot3>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
