@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import com.ferdonof.locki.commons.exceptions.GenericClientException;
 import com.ferdonof.locki.enums.ConstraintValidationsConstants;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -26,7 +27,7 @@ public final class ConstraintViolationHandler {
 							.anyMatch(name -> name.equalsIgnoreCase(cve.getConstraintName()))) {
 				throw exceptionSupplier.get();
 			}
-			throw ex;
+			throw new GenericClientException();
 		}
 	}
 }
