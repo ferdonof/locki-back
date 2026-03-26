@@ -1,7 +1,10 @@
 package com.ferdonof.locki.controllers;
 
-import com.ferdonof.locki.entities.UserEntity;
-import com.ferdonof.locki.repositories.UserRepository;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +18,8 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import com.ferdonof.locki.entities.UserEntity;
+import com.ferdonof.locki.repositories.UserRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -64,17 +65,31 @@ class UsersControllerTestIT {
 	void whenUserAlreadyExists_thenReturn409() throws Exception {
 		this.mockMvc
 				.perform(post(USERS_URL).contentType(MediaType.APPLICATION_JSON)
-						.content(new ClassPathResource("mocks/requests/create-user.json").getContentAsByteArray()))
+				.content(new ClassPathResource("mocks/requests/create-user.json").getContentAsByteArray()))
 				.andExpect(status().isCreated());
 
 		final ClassPathResource resource = new ClassPathResource("mocks/requests/create-user-duplicate-email.json");
 		this.mockMvc
 				.perform(post(USERS_URL).contentType(MediaType.APPLICATION_JSON)
-						.content(resource.getContentAsByteArray()))
+				.content(resource.getContentAsByteArray()))
 				.andExpect(status().isConflict()).andExpect(jsonPath("$.code").value(409))
 				.andExpect(jsonPath("$.title").value("Conflict"))
 				.andExpect(jsonPath("$.detail").value("User with email 'john@example.com' already exists"));
 
 		assertThat(this.userRepository.count()).isEqualTo(1);
+	}
+
+
+	@Test
+	void whenUserHasMissingAttributes_thenReturn400() throws Exception {
+		final ClassPathResource resource = new ClassPathResource("mocks/requests/create-user-missing-attributes.json");
+		this.mockMvc
+				.perform(post(USERS_URL).contentType(MediaType.APPLICATION_JSON)
+				.content(resource.getContentAsByteArray()))
+				.andExpect(status().isBadRequest()).andExpect(jsonPath("$.code").value(400))
+				.andExpect(jsonPath("$.title").value("Error"))
+				.andExpect(jsonPath("$.detail").isEmpty());
+
+		assertThat(this.userRepository.count()).isZero();
 	}
 }
