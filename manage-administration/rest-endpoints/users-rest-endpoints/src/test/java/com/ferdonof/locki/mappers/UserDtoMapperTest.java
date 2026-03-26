@@ -1,16 +1,17 @@
 package com.ferdonof.locki.mappers;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import com.ferdonof.locki.external.admin.dto.CreateUserRequestDTO;
+import com.ferdonof.locki.users.entities.LockiUser;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
 
 import java.time.Instant;
 import java.util.UUID;
 
-import org.junit.jupiter.api.Test;
-import org.mapstruct.factory.Mappers;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import com.ferdonof.locki.external.admin.dto.CreateUserRequestDTO;
-import com.ferdonof.locki.users.entities.LockiUser;
-
+@Tag("unit")
 class UserDtoMapperTest {
 
   private final UserDtoMapper userDtoMapper = Mappers.getMapper(UserDtoMapper.class);

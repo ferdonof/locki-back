@@ -4,8 +4,10 @@ import com.ferdonof.locki.entities.UserEntity;
 import com.ferdonof.locki.mappers.LockiUserMapper;
 import com.ferdonof.locki.repositories.UserRepository;
 import com.ferdonof.locki.users.entities.LockiUser;
+import com.ferdonof.locki.commons.exceptions.GenericClientException;
 import com.ferdonof.locki.users.exceptions.UserAlreadyExistsException;
 import org.hibernate.exception.ConstraintViolationException;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,6 +24,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@Tag("unit")
 @ExtendWith(MockitoExtension.class)
 class UserRepositoryAdapterTest {
 
@@ -75,7 +78,7 @@ class UserRepositoryAdapterTest {
 	}
 
 	@Test
-	void shouldRethrowDataIntegrityViolationExceptionWhenConstraintIsNotEmail() {
+	void shouldThrowGenericClientExceptionWhenConstraintIsNotEmail() {
 		final LockiUser lockiUser = new LockiUser(null, NAME, PHONE, EMAIL, null, null, null);
 		final UserEntity entity = this.buildUserEntity();
 
@@ -84,11 +87,11 @@ class UserRepositoryAdapterTest {
 				new ConstraintViolationException("other constraint", new SQLException(), "other_constraint")));
 
 		assertThatThrownBy(() -> this.userRepositoryAdapter.insert(lockiUser))
-				.isInstanceOf(DataIntegrityViolationException.class).hasMessageContaining("other constraint");
+				.isInstanceOf(GenericClientException.class);
 	}
 
 	@Test
-	void shouldRethrowDataIntegrityViolationExceptionWhenCauseIsNotConstraintViolation() {
+	void shouldThrowGenericClientExceptionWhenCauseIsNotConstraintViolation() {
 		final LockiUser lockiUser = new LockiUser(null, NAME, PHONE, EMAIL, null, null, null);
 		final UserEntity entity = this.buildUserEntity();
 
@@ -97,7 +100,7 @@ class UserRepositoryAdapterTest {
 				new DataIntegrityViolationException("not null violation", new RuntimeException("some cause")));
 
 		assertThatThrownBy(() -> this.userRepositoryAdapter.insert(lockiUser))
-				.isInstanceOf(DataIntegrityViolationException.class).hasMessageContaining("not null violation");
+				.isInstanceOf(GenericClientException.class);
 	}
 
 	private UserEntity buildUserEntity() {
