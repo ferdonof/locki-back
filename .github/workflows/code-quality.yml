@@ -43,17 +43,19 @@ jobs:
               <server>
                 <id>github</id>
                 <username>${env.GITHUB_ACTOR}</username>
-                <password>${env.GITHUB_TOKEN}</password>
+                <password>${env.PACKAGES_TOKEN}</password>
               </server>
             </servers>
           </settings>
           EOF
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
 
       - name: Run unit tests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
         run: |
           mvn --batch-mode test \
             -Dsurefire.failIfNoSpecifiedTests=false \
@@ -101,17 +103,19 @@ jobs:
               <server>
                 <id>github</id>
                 <username>${env.GITHUB_ACTOR}</username>
-                <password>${env.GITHUB_TOKEN}</password>
+                <password>${env.PACKAGES_TOKEN}</password>
               </server>
             </servers>
           </settings>
           EOF
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
 
       - name: Run integration tests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
         run: |
           mvn --batch-mode verify \
             -DskipUnitTests=true \
@@ -162,18 +166,20 @@ jobs:
               <server>
                 <id>github</id>
                 <username>${env.GITHUB_ACTOR}</username>
-                <password>${env.GITHUB_TOKEN}</password>
+                <password>${env.PACKAGES_TOKEN}</password>
               </server>
             </servers>
           </settings>
           EOF
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
 
       - name: Run Checkstyle
         id: checkstyle
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
         run: |
           mvn --batch-mode checkstyle:check \
             -Dcheckstyle.failOnViolation=false \
@@ -184,6 +190,7 @@ jobs:
         id: spotbugs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
         run: |
           mvn --batch-mode compile spotbugs:check \
             -Dspotbugs.failOnError=false \
@@ -195,6 +202,7 @@ jobs:
         id: pmd
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
         run: |
           mvn --batch-mode pmd:check \
             -Dpmd.failOnViolation=false \
@@ -305,13 +313,14 @@ jobs:
               <server>
                 <id>github</id>
                 <username>${env.GITHUB_ACTOR}</username>
-                <password>${env.GITHUB_TOKEN}</password>
+                <password>${env.PACKAGES_TOKEN}</password>
               </server>
             </servers>
           </settings>
           EOF
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
 
       - name: Download unit test coverage
         uses: actions/download-artifact@v4
@@ -328,6 +337,7 @@ jobs:
       - name: Merge coverage reports and check threshold
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
         run: |
           mvn --batch-mode jacoco:merge \
             -Djacoco.fileSets=target/jacoco-unit.exec,target/jacoco-integration.exec \
