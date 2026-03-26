@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      packages: read
 
     steps:
       - uses: actions/checkout@v4
@@ -33,7 +34,28 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
+      - name: Configure Maven settings
+        run: |
+          mkdir -p ~/.m2
+          cat > ~/.m2/settings.xml << 'EOF'
+          <settings>
+            <servers>
+              <server>
+                <id>github</id>
+                <username>${env.GITHUB_ACTOR}</username>
+                <password>${env.PACKAGES_TOKEN}</password>
+              </server>
+            </servers>
+          </settings>
+          EOF
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
+
       - name: Run unit tests
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
         run: |
           mvn --batch-mode test \
             -Dsurefire.failIfNoSpecifiedTests=false \
@@ -54,6 +76,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      packages: read
 
     steps:
       - uses: actions/checkout@v4
@@ -71,7 +94,28 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
+      - name: Configure Maven settings
+        run: |
+          mkdir -p ~/.m2
+          cat > ~/.m2/settings.xml << 'EOF'
+          <settings>
+            <servers>
+              <server>
+                <id>github</id>
+                <username>${env.GITHUB_ACTOR}</username>
+                <password>${env.PACKAGES_TOKEN}</password>
+              </server>
+            </servers>
+          </settings>
+          EOF
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
+
       - name: Run integration tests
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
         run: |
           mvn --batch-mode verify \
             -DskipUnitTests=true \
@@ -94,6 +138,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      packages: read
       pull-requests: write
 
     steps:
@@ -112,8 +157,29 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
+      - name: Configure Maven settings
+        run: |
+          mkdir -p ~/.m2
+          cat > ~/.m2/settings.xml << 'EOF'
+          <settings>
+            <servers>
+              <server>
+                <id>github</id>
+                <username>${env.GITHUB_ACTOR}</username>
+                <password>${env.PACKAGES_TOKEN}</password>
+              </server>
+            </servers>
+          </settings>
+          EOF
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
+
       - name: Run Checkstyle
         id: checkstyle
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
         run: |
           mvn --batch-mode checkstyle:check \
             -Dcheckstyle.failOnViolation=false \
@@ -122,6 +188,9 @@ jobs:
 
       - name: Run SpotBugs
         id: spotbugs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
         run: |
           mvn --batch-mode compile spotbugs:check \
             -Dspotbugs.failOnError=false \
@@ -131,6 +200,9 @@ jobs:
 
       - name: Run PMD
         id: pmd
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
         run: |
           mvn --batch-mode pmd:check \
             -Dpmd.failOnViolation=false \
@@ -142,7 +214,6 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const { execSync } = require('child_process');
             const fs = require('fs');
 
             function parseCheckstyle() {
@@ -214,6 +285,7 @@ jobs:
     needs: [unit-tests, integration-tests]
     permissions:
       contents: read
+      packages: read
       pull-requests: write
 
     steps:
@@ -232,6 +304,24 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
+      - name: Configure Maven settings
+        run: |
+          mkdir -p ~/.m2
+          cat > ~/.m2/settings.xml << 'EOF'
+          <settings>
+            <servers>
+              <server>
+                <id>github</id>
+                <username>${env.GITHUB_ACTOR}</username>
+                <password>${env.PACKAGES_TOKEN}</password>
+              </server>
+            </servers>
+          </settings>
+          EOF
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
+
       - name: Download unit test coverage
         uses: actions/download-artifact@v4
         with:
@@ -245,18 +335,18 @@ jobs:
           path: target/
 
       - name: Merge coverage reports and check threshold
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKAGES_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
         run: |
-          # Fusiona los dos archivos .exec en uno solo
           mvn --batch-mode jacoco:merge \
             -Djacoco.fileSets=target/jacoco-unit.exec,target/jacoco-integration.exec \
             -Djacoco.destFile=target/jacoco-merged.exec
 
-          # Genera el reporte XML a partir del merged
           mvn --batch-mode jacoco:report \
             -Djacoco.dataFile=target/jacoco-merged.exec \
             -Djacoco.outputDirectory=target/site/jacoco-merged
 
-          # Verifica el umbral del 80% — falla el build si no se alcanza
           mvn --batch-mode jacoco:check \
             -Djacoco.dataFile=target/jacoco-merged.exec \
             -Djacoco.haltOnFailure=true \

@@ -251,5 +251,16 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-
+	<repositories>
+		<repository>
+			<id>github</id>
+			<url>https://maven.pkg.github.com/ferdonof/locki-app</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+	</repositories>
 </project>
