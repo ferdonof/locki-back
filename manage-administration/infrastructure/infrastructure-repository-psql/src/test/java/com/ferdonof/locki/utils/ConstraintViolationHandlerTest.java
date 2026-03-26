@@ -10,7 +10,9 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import com.ferdonof.locki.commons.exceptions.GenericClientException;
 import com.ferdonof.locki.enums.ConstraintValidationsConstants;
+import com.ferdonof.locki.users.exceptions.UserAlreadyExistsException;
 
 class ConstraintViolationHandlerTest {
 
@@ -51,7 +53,21 @@ class ConstraintViolationHandlerTest {
 	}
 
 	@Test
-	void shouldRethrowDataIntegrityViolationExceptionWhenConstraintDoesNotMatch() {
+	void shouldThrowUserAlreadyExistsExceptionWhenEmailConstraintMatches() {
+		final String email = "john@example.com";
+		final DataIntegrityViolationException dbException = new DataIntegrityViolationException("duplicate key",
+				new ConstraintViolationException("duplicate key", new SQLException(), "uk_users_email"));
+
+		assertThatThrownBy(() -> ConstraintViolationHandler.executeOrThrow(
+				() -> { throw dbException; },
+				List.of(ConstraintValidationsConstants.UK_USERS_EMAIL),
+				() -> new UserAlreadyExistsException(email)))
+				.isInstanceOf(UserAlreadyExistsException.class)
+				.hasMessageContaining(email);
+	}
+
+	@Test
+	void shouldThrowGenericClientExceptionWhenConstraintDoesNotMatch() {
 		final DataIntegrityViolationException dbException = new DataIntegrityViolationException("other",
 				new ConstraintViolationException("other", new SQLException(), "other_constraint"));
 
@@ -59,12 +75,11 @@ class ConstraintViolationHandlerTest {
 				() -> { throw dbException; },
 				List.of(ConstraintValidationsConstants.UK_USERS_EMAIL),
 				() -> new IllegalStateException("should not be thrown")))
-				.isInstanceOf(DataIntegrityViolationException.class)
-				.isSameAs(dbException);
+				.isInstanceOf(GenericClientException.class);
 	}
 
 	@Test
-	void shouldRethrowDataIntegrityViolationExceptionWhenCauseIsNotConstraintViolation() {
+	void shouldThrowGenericClientExceptionWhenCauseIsNotConstraintViolation() {
 		final DataIntegrityViolationException dbException = new DataIntegrityViolationException("not null",
 				new RuntimeException("some other cause"));
 
@@ -72,20 +87,18 @@ class ConstraintViolationHandlerTest {
 				() -> { throw dbException; },
 				List.of(ConstraintValidationsConstants.UK_USERS_EMAIL),
 				() -> new IllegalStateException("should not be thrown")))
-				.isInstanceOf(DataIntegrityViolationException.class)
-				.isSameAs(dbException);
+				.isInstanceOf(GenericClientException.class);
 	}
 
 	@Test
-	void shouldRethrowDataIntegrityViolationExceptionWhenCauseIsNull() {
+	void shouldThrowGenericClientExceptionWhenCauseIsNull() {
 		final DataIntegrityViolationException dbException = new DataIntegrityViolationException("no cause");
 
 		assertThatThrownBy(() -> ConstraintViolationHandler.executeOrThrow(
 				() -> { throw dbException; },
 				List.of(ConstraintValidationsConstants.UK_USERS_EMAIL),
 				() -> new IllegalStateException("should not be thrown")))
-				.isInstanceOf(DataIntegrityViolationException.class)
-				.isSameAs(dbException);
+				.isInstanceOf(GenericClientException.class);
 	}
 
 	@Test
