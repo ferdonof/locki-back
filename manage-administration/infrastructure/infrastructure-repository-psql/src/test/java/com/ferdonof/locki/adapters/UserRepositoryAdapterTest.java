@@ -6,6 +6,7 @@ import com.ferdonof.locki.repositories.UserRepository;
 import com.ferdonof.locki.users.entities.LockiUser;
 import com.ferdonof.locki.users.exceptions.UserAlreadyExistsException;
 import org.hibernate.exception.ConstraintViolationException;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@Tag("unit")
 @ExtendWith(MockitoExtension.class)
 class UserRepositoryAdapterTest {
 
