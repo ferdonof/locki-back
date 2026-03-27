@@ -61,7 +61,7 @@ class LockerRepositoryAdapterTest {
 				.build();
 
 		when(this.lockerMapper.toEntity(locker)).thenReturn(entity);
-		when(this.lockerRepository.save(entity)).thenReturn(entity);
+		when(this.lockerRepository.saveAndFlush(entity)).thenReturn(entity);
 		when(this.lockerMapper.toDomain(entity)).thenReturn(expectedLocker);
 
 		final Locker result = this.lockerRepositoryAdapter.insert(locker);
@@ -72,7 +72,7 @@ class LockerRepositoryAdapterTest {
 		assertThat(result.status()).isEqualTo(LockerStatus.AVAILABLE);
 		assertThat(result.latchStatus()).isEqualTo(LatchStatus.CLOSED);
 		verify(this.lockerMapper).toEntity(locker);
-		verify(this.lockerRepository).save(entity);
+		verify(this.lockerRepository).saveAndFlush(entity);
 		verify(this.lockerMapper).toDomain(entity);
 	}
 }
