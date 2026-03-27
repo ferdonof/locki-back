@@ -41,7 +41,7 @@
 		<postgresql.version>42.7.10</postgresql.version>
 		<openapigenerator.version>7.0.1</openapigenerator.version>
 
-		<admin-rest-spec.version>1.1.1</admin-rest-spec.version>
+		<admin-rest-spec.version>1.1.2-SNAPSHOT</admin-rest-spec.version>
 		<jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
 		<swagger-annotations.version>2.2.12</swagger-annotations.version>
 		<jakarta.validation-api.version>3.1.1</jakarta.validation-api.version>
@@ -251,16 +251,16 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-	<repositories>
-		<repository>
-			<id>github</id>
-			<url>https://maven.pkg.github.com/ferdonof/locki-app</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-	</repositories>
+<!--	<repositories>-->
+<!--		<repository>-->
+<!--			<id>github</id>-->
+<!--			<url>https://maven.pkg.github.com/ferdonof/locki-app</url>-->
+<!--			<snapshots>-->
+<!--				<enabled>true</enabled>-->
+<!--			</snapshots>-->
+<!--			<releases>-->
+<!--				<enabled>true</enabled>-->
+<!--			</releases>-->
+<!--		</repository>-->
+<!--	</repositories>-->
 </project>

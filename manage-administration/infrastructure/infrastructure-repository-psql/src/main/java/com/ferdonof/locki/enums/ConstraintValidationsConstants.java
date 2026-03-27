@@ -11,4 +11,13 @@ public enum ConstraintValidationsConstants {
   ConstraintValidationsConstants(String value) {
     this.value = value;
   }
+
+  public static ConstraintValidationsConstants from(String value) {
+    for (final ConstraintValidationsConstants constant : values()) {
+      if (constant.getValue().equalsIgnoreCase(value)) {
+        return constant;
+      }
+    }
+    return null;
+  }
 }
