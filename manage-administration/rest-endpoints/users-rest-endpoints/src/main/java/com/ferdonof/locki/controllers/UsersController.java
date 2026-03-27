@@ -4,6 +4,7 @@ import com.ferdonof.locki.external.admin.dto.CreateUserRequestDTO;
 import com.ferdonof.locki.mappers.UserDtoMapper;
 import com.ferdonof.locki.users.entities.LockiUser;
 import com.ferdonof.locki.users.usecases.CreateUser;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +26,7 @@ public class UsersController {
 	@PostMapping
 	@ResponseBody
 	@ResponseStatus(HttpStatus.CREATED)
-	public LockiUser create(@RequestBody CreateUserRequestDTO request) {
+	public LockiUser create(@RequestBody @Valid CreateUserRequestDTO request) {
 		return this.createUserUseCase.execute(this.userDtoMapper.toDomain(request));
 	}
 

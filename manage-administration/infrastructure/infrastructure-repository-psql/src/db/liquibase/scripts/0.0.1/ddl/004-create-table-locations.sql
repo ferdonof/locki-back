@@ -9,7 +9,6 @@ CREATE TABLE locations (
                        code VARCHAR(15),
                        country VARCHAR(100),
                        description VARCHAR(255),
-                       status VARCHAR(15) NOT NULL,
                        latitude Numeric(9, 6),
                        longitude Numeric(9, 6),
                        version BIGINT NOT NULL DEFAULT 1,
