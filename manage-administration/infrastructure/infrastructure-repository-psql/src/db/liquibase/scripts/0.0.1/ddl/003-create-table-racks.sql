@@ -4,6 +4,7 @@
 
 CREATE TABLE racks (
                        id UUID PRIMARY KEY NOT NULL,
+                       number INT NOT NULL,
                        status VARCHAR(15) NOT NULL,
                        location_id UUID,
                        version BIGINT NOT NULL DEFAULT 1,

@@ -5,6 +5,7 @@
 CREATE TABLE lockers (
                        id UUID PRIMARY KEY NOT NULL,
                        rack_id UUID,
+                       number INT NOT NULL,
                        status VARCHAR(15) NOT NULL,
                        latch_status VARCHAR(15) NOT NULL,
                        user_id UUID,
