@@ -1,10 +1,7 @@
 package com.ferdonof.locki.controllers;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import com.ferdonof.locki.entities.UserEntity;
+import com.ferdonof.locki.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -19,8 +16,10 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import com.ferdonof.locki.entities.UserEntity;
-import com.ferdonof.locki.repositories.UserRepository;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Tag("integration")
 @SpringBootTest
@@ -47,7 +46,7 @@ class UsersControllerTestIT {
 
 	@Test
 	void whenCreateUserOk_thenReturn201() throws Exception {
-		final ClassPathResource resource = new ClassPathResource("mocks/requests/create-user.json");
+		final ClassPathResource resource = new ClassPathResource("mocks/requests/users/create-user.json");
 		this.mockMvc
 				.perform(post(USERS_URL).contentType(MediaType.APPLICATION_JSON)
 						.content(resource.getContentAsByteArray()))
@@ -67,10 +66,10 @@ class UsersControllerTestIT {
 	void whenUserAlreadyExists_thenReturn409() throws Exception {
 		this.mockMvc
 				.perform(post(USERS_URL).contentType(MediaType.APPLICATION_JSON)
-				.content(new ClassPathResource("mocks/requests/create-user.json").getContentAsByteArray()))
+				.content(new ClassPathResource("mocks/requests/users/create-user.json").getContentAsByteArray()))
 				.andExpect(status().isCreated());
 
-		final ClassPathResource resource = new ClassPathResource("mocks/requests/create-user-duplicate-email.json");
+		final ClassPathResource resource = new ClassPathResource("mocks/requests/users/create-user-duplicate-email.json");
 		this.mockMvc
 				.perform(post(USERS_URL).contentType(MediaType.APPLICATION_JSON)
 				.content(resource.getContentAsByteArray()))
@@ -84,7 +83,7 @@ class UsersControllerTestIT {
 
 	@Test
 	void whenUserHasMissingAttributes_thenReturn400() throws Exception {
-		final ClassPathResource resource = new ClassPathResource("mocks/requests/create-user-missing-attributes.json");
+		final ClassPathResource resource = new ClassPathResource("mocks/requests/users/create-user-missing-attributes.json");
 		this.mockMvc
 				.perform(post(USERS_URL).contentType(MediaType.APPLICATION_JSON)
 				.content(resource.getContentAsByteArray()))
