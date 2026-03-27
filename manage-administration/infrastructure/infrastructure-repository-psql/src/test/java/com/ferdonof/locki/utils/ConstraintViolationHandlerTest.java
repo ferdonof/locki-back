@@ -1,18 +1,17 @@
 package com.ferdonof.locki.utils;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
-import java.sql.SQLException;
-import java.util.List;
-
+import com.ferdonof.locki.commons.exceptions.GenericClientException;
+import com.ferdonof.locki.enums.ConstraintValidationsConstants;
+import com.ferdonof.locki.users.exceptions.UserAlreadyExistsException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import com.ferdonof.locki.commons.exceptions.GenericClientException;
-import com.ferdonof.locki.enums.ConstraintValidationsConstants;
-import com.ferdonof.locki.users.exceptions.UserAlreadyExistsException;
+import java.sql.SQLException;
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ConstraintViolationHandlerTest {
 
@@ -20,8 +19,8 @@ class ConstraintViolationHandlerTest {
 	void shouldReturnResultWhenNoExceptionIsThrown() {
 		final String result = ConstraintViolationHandler.executeOrThrow(
 				() -> "success",
-				List.of(ConstraintValidationsConstants.UK_USERS_EMAIL),
-				() -> new RuntimeException("should not be thrown"));
+				Map.of(ConstraintValidationsConstants.UK_USERS_EMAIL,
+				() -> new RuntimeException("should not be thrown")));
 
 		assertThat(result).isEqualTo("success");
 	}
@@ -33,8 +32,8 @@ class ConstraintViolationHandlerTest {
 
 		assertThatThrownBy(() -> ConstraintViolationHandler.executeOrThrow(
 				() -> { throw dbException; },
-				List.of(ConstraintValidationsConstants.UK_USERS_EMAIL),
-				() -> new IllegalStateException("duplicated email")))
+				Map.of(ConstraintValidationsConstants.UK_USERS_EMAIL,
+				() -> new IllegalStateException("duplicated email"))))
 				.isInstanceOf(IllegalStateException.class)
 				.hasMessage("duplicated email");
 	}
@@ -46,8 +45,8 @@ class ConstraintViolationHandlerTest {
 
 		assertThatThrownBy(() -> ConstraintViolationHandler.executeOrThrow(
 				() -> { throw dbException; },
-				List.of(ConstraintValidationsConstants.UK_USERS_EMAIL),
-				() -> new IllegalStateException("matched")))
+				Map.of(ConstraintValidationsConstants.UK_USERS_EMAIL,
+				() -> new IllegalStateException("matched"))))
 				.isInstanceOf(IllegalStateException.class)
 				.hasMessage("matched");
 	}
@@ -60,8 +59,8 @@ class ConstraintViolationHandlerTest {
 
 		assertThatThrownBy(() -> ConstraintViolationHandler.executeOrThrow(
 				() -> { throw dbException; },
-				List.of(ConstraintValidationsConstants.UK_USERS_EMAIL),
-				() -> new UserAlreadyExistsException(email)))
+				Map.of(ConstraintValidationsConstants.UK_USERS_EMAIL,
+				() -> new UserAlreadyExistsException(email))))
 				.isInstanceOf(UserAlreadyExistsException.class)
 				.hasMessageContaining(email);
 	}
@@ -73,8 +72,8 @@ class ConstraintViolationHandlerTest {
 
 		assertThatThrownBy(() -> ConstraintViolationHandler.executeOrThrow(
 				() -> { throw dbException; },
-				List.of(ConstraintValidationsConstants.UK_USERS_EMAIL),
-				() -> new IllegalStateException("should not be thrown")))
+				Map.of(ConstraintValidationsConstants.UK_USERS_EMAIL,
+				() -> new IllegalStateException("should not be thrown"))))
 				.isInstanceOf(GenericClientException.class);
 	}
 
@@ -85,8 +84,8 @@ class ConstraintViolationHandlerTest {
 
 		assertThatThrownBy(() -> ConstraintViolationHandler.executeOrThrow(
 				() -> { throw dbException; },
-				List.of(ConstraintValidationsConstants.UK_USERS_EMAIL),
-				() -> new IllegalStateException("should not be thrown")))
+				Map.of(ConstraintValidationsConstants.UK_USERS_EMAIL,
+				() -> new IllegalStateException("should not be thrown"))))
 				.isInstanceOf(GenericClientException.class);
 	}
 
@@ -96,8 +95,8 @@ class ConstraintViolationHandlerTest {
 
 		assertThatThrownBy(() -> ConstraintViolationHandler.executeOrThrow(
 				() -> { throw dbException; },
-				List.of(ConstraintValidationsConstants.UK_USERS_EMAIL),
-				() -> new IllegalStateException("should not be thrown")))
+				Map.of(ConstraintValidationsConstants.UK_USERS_EMAIL,
+				() -> new IllegalStateException("should not be thrown"))))
 				.isInstanceOf(GenericClientException.class);
 	}
 
@@ -108,8 +107,8 @@ class ConstraintViolationHandlerTest {
 
 		assertThatThrownBy(() -> ConstraintViolationHandler.executeOrThrow(
 				() -> { throw dbException; },
-				List.of(ConstraintValidationsConstants.UK_USERS_EMAIL),
-				() -> new IllegalStateException("case insensitive match")))
+				Map.of(ConstraintValidationsConstants.UK_USERS_EMAIL,
+				() -> new IllegalStateException("case insensitive match"))))
 				.isInstanceOf(IllegalStateException.class)
 				.hasMessage("case insensitive match");
 	}

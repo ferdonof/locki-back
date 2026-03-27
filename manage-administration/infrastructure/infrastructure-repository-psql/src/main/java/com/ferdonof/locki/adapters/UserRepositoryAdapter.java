@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Map;
 
 import static com.ferdonof.locki.enums.ConstraintValidationsConstants.UK_USERS_EMAIL;
 
@@ -28,8 +28,8 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
 		final UserEntity userEntity = this.lockiUserMapper.toEntity(lockiUser);
 
 		final UserEntity savedEntity = ConstraintViolationHandler.executeOrThrow(
-				() -> this.userRepository.saveAndFlush(userEntity), List.of(UK_USERS_EMAIL),
-				() -> new UserAlreadyExistsException(lockiUser.email()));
+				() -> this.userRepository.saveAndFlush(userEntity),
+				Map.of(UK_USERS_EMAIL, () -> new UserAlreadyExistsException(lockiUser.email())));
 
 		return this.lockiUserMapper.toDomain(savedEntity);
 	}

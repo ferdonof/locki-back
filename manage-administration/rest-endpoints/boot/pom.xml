@@ -22,12 +22,21 @@
         <dependency>
             <groupId>com.ferdonof</groupId>
             <artifactId>users-rest-endpoints</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ferdonof</groupId>
+            <artifactId>lockers-rest-endpoints</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>postgresql</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
         </dependency>
     </dependencies>
 
