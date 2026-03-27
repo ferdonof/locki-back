@@ -54,7 +54,9 @@ class LocationsControllerTestIT {
 				.andExpect(status().isCreated())
 				.andExpect(jsonPath("$.id").isNotEmpty())
 				.andExpect(jsonPath("$.city").value("Madrid"))
-				.andExpect(jsonPath("$.country").value("Spain"));
+				.andExpect(jsonPath("$.country").value("Spain"))
+				.andExpect(jsonPath("$.latitude").value(40.4168f))
+				.andExpect(jsonPath("$.longitude").value(-3.7038f));
 
 		assertThat(this.locationRepository.count()).isEqualTo(1);
 
