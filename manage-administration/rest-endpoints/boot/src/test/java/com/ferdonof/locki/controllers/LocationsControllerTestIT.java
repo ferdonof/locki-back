@@ -1,10 +1,7 @@
 package com.ferdonof.locki.controllers;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import com.ferdonof.locki.entities.LocationEntity;
+import com.ferdonof.locki.repositories.LocationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -12,14 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import com.ferdonof.locki.entities.LocationEntity;
-import com.ferdonof.locki.repositories.LocationRepository;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Tag("integration")
 @SpringBootTest
@@ -46,19 +46,11 @@ class LocationsControllerTestIT {
 
 	@Test
 	void create_whenValidRequest_shouldReturn201() throws Exception {
-		final String requestBody = """
-				{
-				  "city": "Madrid",
-				  "country": "Spain",
-				  "code": "MAD",
-				  "latitude": 40.4168,
-				  "longitude": -3.7038
-				}
-				""";
-
+		final ClassPathResource resource = new ClassPathResource("mocks/requests/locations/create-location.json");
 		this.mockMvc
-				.perform(post(LOCATIONS_URL).contentType(MediaType.APPLICATION_JSON)
-						.content(requestBody))
+				.perform(post(LOCATIONS_URL)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(resource.getContentAsByteArray()))
 				.andExpect(status().isCreated())
 				.andExpect(jsonPath("$.id").isNotEmpty())
 				.andExpect(jsonPath("$.city").value("Madrid"))
@@ -85,16 +77,11 @@ class LocationsControllerTestIT {
 
 	@Test
 	void create_whenDataIntegrityViolation_shouldReturn400() throws Exception {
-		final String requestBody = """
-				{
-				  "city": "Madrid",
-				  "country": "Spain"
-				}
-				""";
+		final ClassPathResource resource = new ClassPathResource("mocks/requests/locations/create-location-missing-attributes.json");
 
 		this.mockMvc
 				.perform(post(LOCATIONS_URL).contentType(MediaType.APPLICATION_JSON)
-						.content(requestBody))
+						.content(resource.getContentAsByteArray()))
 				.andExpect(status().isBadRequest());
 
 		assertThat(this.locationRepository.count()).isZero();

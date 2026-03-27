@@ -1,10 +1,10 @@
 package com.ferdonof.locki.controllers;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import com.ferdonof.locki.entities.LockerEntity;
+import com.ferdonof.locki.entities.RackEntity;
+import com.ferdonof.locki.racks.enums.RackStatus;
+import com.ferdonof.locki.repositories.LockerRepository;
+import com.ferdonof.locki.repositories.RackRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -19,11 +19,10 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import com.ferdonof.locki.entities.LockerEntity;
-import com.ferdonof.locki.entities.RackEntity;
-import com.ferdonof.locki.racks.enums.RackStatus;
-import com.ferdonof.locki.repositories.LockerRepository;
-import com.ferdonof.locki.repositories.RackRepository;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Tag("integration")
 @SpringBootTest
@@ -88,7 +87,7 @@ class LockersControllerTestIT {
 
 	@Test
 	void create_whenRackDoesNotExist_shouldReturn201WithNullRack() throws Exception {
-		final ClassPathResource resource = new ClassPathResource("mocks/requests/create-locker.json");
+		final ClassPathResource resource = new ClassPathResource("mocks/requests/lockers/create-locker.json");
 		this.mockMvc
 				.perform(post(LOCKERS_URL).contentType(MediaType.APPLICATION_JSON)
 						.content(resource.getContentAsByteArray()))
