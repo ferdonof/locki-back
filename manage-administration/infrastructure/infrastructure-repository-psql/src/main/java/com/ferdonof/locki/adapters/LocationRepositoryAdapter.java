@@ -10,21 +10,26 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
 public class LocationRepositoryAdapter implements LocationRepositoryPort {
 
-  private final LocationMapper locationMapper;
+	private final LocationMapper locationMapper;
 
-  private final LocationRepository locationRepository;
+	private final LocationRepository locationRepository;
 
-  @Override
-  public Location insert(Location location) {
-    final LocationEntity locationEntity = this.locationMapper.toEntity(location);
-    return ConstraintViolationHandler.executeOrThrow(
-        () -> this.locationMapper.toDomain(this.locationRepository.saveAndFlush(locationEntity)),
-        Map.of()
-    );
-  }
+	@Override
+	public Location insert(Location location) {
+		final LocationEntity locationEntity = this.locationMapper.toEntity(location);
+		return ConstraintViolationHandler.executeOrThrow(
+				() -> this.locationMapper.toDomain(this.locationRepository.saveAndFlush(locationEntity)), Map.of());
+	}
+
+	@Override
+	public Optional<Location> findById(UUID id) {
+		return this.locationRepository.findById(id).map(this.locationMapper::toDomain);
+	}
 }
