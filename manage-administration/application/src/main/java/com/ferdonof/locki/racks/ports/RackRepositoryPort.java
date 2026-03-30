@@ -7,4 +7,6 @@ import java.util.UUID;
 
 public interface RackRepositoryPort {
   Optional<Rack> findById(UUID id);
+
+  Rack insert(Rack rack);
 }

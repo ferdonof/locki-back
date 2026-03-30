@@ -23,10 +23,6 @@
 	</developers>
 	<modules>
 		<module>manage-administration</module>
-        <module>manage-administration/rest-endpoints/users-rest-endpoints</module>
-		<module>manage-administration/rest-endpoints/lockers-rest-endpoints</module>
-		<module>manage-administration/rest-endpoints/racks-rest-endpoints</module>
-		<module>manage-administration/rest-endpoints/locations-rest-endpoints</module>
 	</modules>
 	<scm>
 		<connection/>
