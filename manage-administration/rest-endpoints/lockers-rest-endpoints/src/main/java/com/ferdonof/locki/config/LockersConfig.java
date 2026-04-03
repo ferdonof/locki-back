@@ -21,37 +21,37 @@ import org.springframework.transaction.support.TransactionTemplate;
 @Configuration
 public class LockersConfig {
 
-  @Bean
-  public CreateLocker createLocker(final TransactionTemplate transactionTemplate,
-                                   final LockerRepositoryPort lockerRepositoryPort,
-                                   final RackRepositoryPort rackRepositoryPort) {
-    return new CreateLockerImpl(transactionTemplate, lockerRepositoryPort, rackRepositoryPort);
-  }
+	@Bean
+	public CreateLocker createLocker(final TransactionTemplate transactionTemplate,
+			final LockerRepositoryPort lockerRepositoryPort, final RackRepositoryPort rackRepositoryPort) {
+		return new CreateLockerImpl(transactionTemplate, lockerRepositoryPort, rackRepositoryPort);
+	}
 
-  @Bean
-  public GetLocker getLocker(final LockerRepositoryPort lockerRepositoryPort) {
-    return new GetLockerImpl(lockerRepositoryPort);
-  }
+	@Bean
+	public GetLocker getLocker(final LockerRepositoryPort lockerRepositoryPort) {
+		return new GetLockerImpl(lockerRepositoryPort);
+	}
 
-  @Bean
-  public UpdateLocker updateLocker(final TransactionTemplate transactionTemplate,
-                                   final LockerRepositoryPort lockerRepositoryPort,
-                                   final RackRepositoryPort rackRepositoryPort) {
-    return new UpdateLockerImpl(transactionTemplate, lockerRepositoryPort, rackRepositoryPort);
-  }
+	@Bean
+	public UpdateLocker updateLocker(final TransactionTemplate transactionTemplate,
+			final LockerRepositoryPort lockerRepositoryPort, final RackRepositoryPort rackRepositoryPort) {
+		return new UpdateLockerImpl(transactionTemplate, lockerRepositoryPort, rackRepositoryPort);
+	}
 
-  @Bean
-  public SearchLockers searchLockers(final LockerRepositoryPort lockerRepositoryPort) {
-    return new SearchLockersImpl(lockerRepositoryPort);
-  }
+	@Bean
+	public SearchLockers searchLockers(final LockerRepositoryPort lockerRepositoryPort) {
+		return new SearchLockersImpl(lockerRepositoryPort);
+	}
 
-  @Bean
-  public ChangeLockerStatus changeLockerStatus(final LockerRepositoryPort lockerRepositoryPort) {
-    return new ChangeLockerStatusImpl(lockerRepositoryPort);
-  }
+	@Bean
+	public ChangeLockerStatus changeLockerStatus(final TransactionTemplate transactionTemplate,
+			final LockerRepositoryPort lockerRepositoryPort) {
+		return new ChangeLockerStatusImpl(transactionTemplate, lockerRepositoryPort);
+	}
 
-  @Bean
-  public ChangeLatchStatus changeLatchStatus(final LockerRepositoryPort lockerRepositoryPort) {
-    return new ChangeLatchStatusImpl(lockerRepositoryPort);
-  }
+	@Bean
+	public ChangeLatchStatus changeLatchStatus(final TransactionTemplate transactionTemplate,
+			final LockerRepositoryPort lockerRepositoryPort) {
+		return new ChangeLatchStatusImpl(transactionTemplate, lockerRepositoryPort);
+	}
 }
