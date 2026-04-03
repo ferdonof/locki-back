@@ -6,10 +6,13 @@ import com.ferdonof.locki.racks.exceptions.RackNotFoundException;
 import com.ferdonof.locki.racks.ports.RackRepositoryPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.support.TransactionTemplate;
 
 @Slf4j
 @RequiredArgsConstructor
 public class UpdateRackImpl implements UpdateRack {
+
+	private final TransactionTemplate transactionTemplate;
 
 	private final RackRepositoryPort rackRepository;
 
@@ -17,15 +20,15 @@ public class UpdateRackImpl implements UpdateRack {
 	public Rack execute(UpdateRackRequest request) {
 		log.info("Updating rack with id {}", request.id());
 
-		final var existingRack = this.rackRepository.findById(request.id())
-				.orElseThrow(() -> new RackNotFoundException(request.id()));
+		return this.transactionTemplate.execute(txStatus -> {
+			final var existingRack = this.rackRepository.findById(request.id())
+					.orElseThrow(() -> new RackNotFoundException(request.id()));
 
-		final var updatedRack = existingRack.toBuilder()
-				.status(request.status() != null ? request.status() : existingRack.status())
-				.location(request.location() != null ? request.location() : existingRack.location())
-				.build();
+			final var updatedRack = existingRack.toBuilder()
+					.status(request.status() != null ? request.status() : existingRack.status())
+					.location(request.location() != null ? request.location() : existingRack.location()).build();
 
-		return this.rackRepository.update(updatedRack);
+			return this.rackRepository.update(updatedRack);
+		});
 	}
 }
-

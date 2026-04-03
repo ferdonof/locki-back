@@ -32,8 +32,8 @@ public class RackConfig {
 	}
 
 	@Bean
-	public UpdateRack updateRack(RackRepositoryPort rackRepositoryPort) {
-		return new UpdateRackImpl(rackRepositoryPort);
+	public UpdateRack updateRack(TransactionTemplate transactionTemplate, RackRepositoryPort rackRepositoryPort) {
+		return new UpdateRackImpl(transactionTemplate, rackRepositoryPort);
 	}
 
 	@Bean
