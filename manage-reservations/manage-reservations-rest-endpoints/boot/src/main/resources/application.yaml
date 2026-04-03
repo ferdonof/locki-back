@@ -6,9 +6,9 @@ management:
 
 spring:
   application:
-    name: locki-admin
+    name: locki-reservations
   datasource:
-    url: jdbc:postgresql://localhost:5450/locki-admin
+    url: jdbc:postgresql://localhost:5460/locki-reservations
     username: locki
     password: locki
     driver-class-name: org.postgresql.Driver
