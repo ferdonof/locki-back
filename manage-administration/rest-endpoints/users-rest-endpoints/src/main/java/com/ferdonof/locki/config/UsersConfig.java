@@ -9,13 +9,14 @@ import com.ferdonof.locki.users.usecases.SearchUsers;
 import com.ferdonof.locki.users.usecases.SearchUsersImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.support.TransactionTemplate;
 
 @Configuration
 public class UsersConfig {
 
 	@Bean
-	public CreateUser createUserUseCase(UserRepositoryPort userRepository) {
-		return new CreateUserImpl(userRepository);
+	public CreateUser createUserUseCase(TransactionTemplate transactionTemplate, UserRepositoryPort userRepository) {
+		return new CreateUserImpl(transactionTemplate, userRepository);
 	}
 
 	@Bean

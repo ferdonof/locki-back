@@ -5,12 +5,14 @@ import com.ferdonof.locki.locations.usecases.CreateLocation;
 import com.ferdonof.locki.locations.usecases.CreateLocationImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.support.TransactionTemplate;
 
 @Configuration
 public class LocationConfig {
 
-  @Bean
-  public CreateLocation createLocation(LocationRepositoryPort locationRepositoryPort) {
-    return new CreateLocationImpl(locationRepositoryPort);
-  }
+	@Bean
+	public CreateLocation createLocation(TransactionTemplate transactionTemplate,
+			LocationRepositoryPort locationRepositoryPort) {
+		return new CreateLocationImpl(transactionTemplate, locationRepositoryPort);
+	}
 }
