@@ -23,7 +23,8 @@
 	</developers>
 	<modules>
 		<module>manage-administration</module>
-	</modules>
+        <module>manage-reservations</module>
+    </modules>
 	<scm>
 		<connection/>
 		<developerConnection/>

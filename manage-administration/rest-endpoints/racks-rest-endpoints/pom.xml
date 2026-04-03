@@ -10,7 +10,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>racks-rest-endpoints</artifactId>
+    <artifactId>manage-administration-rest-endpoints-racks-rest-endpoints</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

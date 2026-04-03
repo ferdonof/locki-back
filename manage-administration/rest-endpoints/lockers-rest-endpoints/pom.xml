@@ -10,7 +10,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>lockers-rest-endpoints</artifactId>
+    <artifactId>manage-administration-rest-endpoints-lockers-rest-endpoints</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

@@ -10,7 +10,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>boot</artifactId>
+    <artifactId>manage-administration-rest-endpoints-boot</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -21,22 +21,22 @@
     <dependencies>
         <dependency>
             <groupId>com.ferdonof</groupId>
-            <artifactId>users-rest-endpoints</artifactId>
+            <artifactId>manage-administration-rest-endpoints-users-rest-endpoints</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.ferdonof</groupId>
-            <artifactId>lockers-rest-endpoints</artifactId>
+            <artifactId>manage-administration-rest-endpoints-lockers-rest-endpoints</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.ferdonof</groupId>
-            <artifactId>locations-rest-endpoints</artifactId>
+            <artifactId>manage-administration-rest-endpoints-locations-rest-endpoints</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.ferdonof</groupId>
-            <artifactId>racks-rest-endpoints</artifactId>
+            <artifactId>manage-administration-rest-endpoints-racks-rest-endpoints</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
