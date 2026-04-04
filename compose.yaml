@@ -1,18 +1,28 @@
 services:
-  postgres:
+  postgres-admin:
     image: 'postgres:latest'
     environment:
-      - 'POSTGRES_DB=lockidb'
+      - 'POSTGRES_DB=locki-admin'
       - 'POSTGRES_PASSWORD=locki'
       - 'POSTGRES_USER=locki'
     ports:
-      - '5435:5432'
+      - '5450:5432'
+    networks:
+      - locki-net
+  postgres-reservations:
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=locki-reservations'
+      - 'POSTGRES_PASSWORD=locki'
+      - 'POSTGRES_USER=locki'
+    ports:
+      - '5460:5432'
     networks:
       - locki-net
   redis:
     image: 'redis:latest'
     ports:
-      - '6375:6379'
+      - '6380:6379'
     networks:
       - locki-net
 

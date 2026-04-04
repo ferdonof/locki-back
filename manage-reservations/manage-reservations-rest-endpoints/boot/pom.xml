@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.ferdonof</groupId>
-        <artifactId>manage-administration-rest-endpoints</artifactId>
+        <artifactId>manage-reservations</artifactId>
         <version>0.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>manage-administration-rest-endpoints-boot</artifactId>
+    <artifactId>manage-reservations-rest-endpoints-boot</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -21,22 +21,7 @@
     <dependencies>
         <dependency>
             <groupId>com.ferdonof</groupId>
-            <artifactId>manage-administration-rest-endpoints-users-rest-endpoints</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.ferdonof</groupId>
-            <artifactId>manage-administration-rest-endpoints-lockers-rest-endpoints</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.ferdonof</groupId>
-            <artifactId>manage-administration-rest-endpoints-locations-rest-endpoints</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.ferdonof</groupId>
-            <artifactId>manage-administration-rest-endpoints-racks-rest-endpoints</artifactId>
+            <artifactId>manage-reservations-rest-endpoints</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -49,14 +34,4 @@
             <artifactId>spring-tx</artifactId>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
-
 </project>
