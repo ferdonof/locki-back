@@ -23,7 +23,8 @@
 	</developers>
 	<modules>
 		<module>manage-administration</module>
-	</modules>
+        <module>manage-reservations</module>
+    </modules>
 	<scm>
 		<connection/>
 		<developerConnection/>
@@ -164,6 +165,13 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>net.logstash.logback</groupId>
+			<artifactId>logstash-logback-encoder</artifactId>
+			<version>8.0</version>
+			<scope>runtime</scope>
 		</dependency>
 
 <!--

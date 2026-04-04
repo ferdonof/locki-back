@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.ferdonof</groupId>
-        <artifactId>manage-administration-rest-endpoints</artifactId>
+        <artifactId>manage-reservations</artifactId>
         <version>0.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>manage-administration-rest-endpoints-lockers-rest-endpoints</artifactId>
+    <artifactId>manage-reservations-rest-endpoints</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -18,12 +18,22 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+
     <dependencies>
         <dependency>
             <groupId>com.ferdonof</groupId>
-            <artifactId>manage-administration-application</artifactId>
+            <artifactId>manage-reservations-domain</artifactId>
             <version>${project.version}</version>
-            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.ferdonof</groupId>
+            <artifactId>manage-reservations-application</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ferdonof</groupId>
+            <artifactId>manage-reservations-infrastructure-repository-psql</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 
