@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 
 import com.ferdonof.locki.entities.LockerEntity;
@@ -35,7 +34,7 @@ public final class LockerSpecification {
   private static Specification<LockerEntity> hasNumber(Integer number) {
     return number == null
         ? null
-        : (root, query, cb) -> cb.equal(root.get("number"), number);
+        : (root, query, cb) -> cb.equal(root.get("serial"), number);
   }
 
   private static Specification<LockerEntity> hasRackId(UUID rackId) {
@@ -56,21 +55,5 @@ public final class LockerSpecification {
     return latchStatus == null
         ? null
         : (root, query, cb) -> cb.equal(root.get("latchStatus"), latchStatus);
-  }
-
-  public static Sort orderBy(String sortBy, Sort.Direction direction) {
-    if (sortBy == null || sortBy.isEmpty()) {
-      return Sort.by(Sort.Direction.ASC, "number");
-    }
-
-    return Sort.by(direction != null ? direction : Sort.Direction.ASC, sortBy);
-  }
-
-  public static Sort orderBy(String sortBy) {
-    return orderBy(sortBy, Sort.Direction.ASC);
-  }
-
-  public static Sort defaultSort() {
-    return Sort.by(Sort.Direction.ASC, "number");
   }
 }
