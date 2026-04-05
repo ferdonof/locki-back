@@ -25,6 +25,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.ferdonof.locki.lockers.enums.LatchStatus;
+import com.ferdonof.locki.lockers.enums.LockerSize;
 import com.ferdonof.locki.lockers.enums.LockerStatus;
 
 @Getter
@@ -33,8 +34,7 @@ import com.ferdonof.locki.lockers.enums.LockerStatus;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "lockers")
-public class LockerEntity implements Serializable
-{
+public class LockerEntity implements Serializable {
   @Serial
   private static final long serialVersionUID = -2663306887449168838L;
 
@@ -52,6 +52,9 @@ public class LockerEntity implements Serializable
 
   @Enumerated(EnumType.STRING)
   private LatchStatus latchStatus;
+
+  @Enumerated(EnumType.STRING)
+  private LockerSize size;
 
   @Version
   private Long version;
