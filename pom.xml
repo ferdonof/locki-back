@@ -38,7 +38,8 @@
 		<postgresql.version>42.7.10</postgresql.version>
 		<openapigenerator.version>7.0.1</openapigenerator.version>
 
-		<admin-rest-spec.version>1.1.2-SNAPSHOT</admin-rest-spec.version>
+		<admin-rest-spec.version>2.0.1</admin-rest-spec.version>
+		<admin-async-spec.version>0.0.1</admin-async-spec.version>
 		<jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
 		<swagger-annotations.version>2.2.12</swagger-annotations.version>
 		<jakarta.validation-api.version>3.1.1</jakarta.validation-api.version>

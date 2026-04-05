@@ -11,14 +11,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Getter
 @Entity
@@ -43,10 +44,10 @@ public class LocationEntity implements Serializable {
   private String country;
 
   @Column(precision = 9, scale = 6)
-  private BigDecimal latitude;
+  private BigDecimal lat;
 
   @Column(precision = 9, scale = 6)
-  private BigDecimal longitude;
+  private BigDecimal lon;
 
   @Version
   private long version;

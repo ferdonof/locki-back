@@ -8,5 +8,5 @@ import java.util.UUID;
 
 @Builder
 public record Location(UUID id, String name, String address, String city, String country, String code,
-                       BigDecimal latitude, BigDecimal longitude, Long version, Instant createdAt, Instant updatedAt) {
+                       BigDecimal lat, BigDecimal lon, Long version, Instant createdAt, Instant updatedAt) {
 }

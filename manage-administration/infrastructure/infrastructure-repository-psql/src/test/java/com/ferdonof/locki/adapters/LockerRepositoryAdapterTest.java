@@ -1,5 +1,6 @@
 package com.ferdonof.locki.adapters;
 
+import static com.ferdonof.locki.lockers.enums.LatchStatus.LOCKED;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -16,7 +17,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.ferdonof.locki.entities.LockerEntity;
 import com.ferdonof.locki.lockers.entities.Locker;
-import com.ferdonof.locki.lockers.enums.LatchStatus;
 import com.ferdonof.locki.lockers.enums.LockerStatus;
 import com.ferdonof.locki.mappers.LockerMapper;
 import com.ferdonof.locki.repositories.LockerRepository;
@@ -24,56 +24,58 @@ import com.ferdonof.locki.repositories.LockerRepository;
 @Tag("unit")
 @ExtendWith(MockitoExtension.class)
 class LockerRepositoryAdapterTest {
+  @Mock
+  private LockerMapper lockerMapper;
 
-	@Mock
-	private LockerMapper lockerMapper;
+  @Mock
+  private LockerRepository lockerRepository;
 
-	@Mock
-	private LockerRepository lockerRepository;
+  @InjectMocks
+  private LockerRepositoryAdapter lockerRepositoryAdapter;
 
-	@InjectMocks
-	private LockerRepositoryAdapter lockerRepositoryAdapter;
+  @Test
+  void insert_whenValidLocker_shouldReturnSavedLocker() {
+    final Locker locker = Locker
+        .builder()
+        .serial(1)
+        .status(LockerStatus.AVAILABLE)
+        .latchStatus(LOCKED)
+        .build();
+    final LockerEntity entity = LockerEntity
+        .builder()
+        .id(UUID.randomUUID())
+        .serial(1)
+        .status(LockerStatus.AVAILABLE)
+        .latchStatus(LOCKED)
+        .version(0L)
+        .createdAt(Instant.now())
+        .updatedAt(Instant.now())
+        .build();
+    final Locker expectedLocker = Locker
+        .builder()
+        .id(entity.getId())
+        .serial(1)
+        .status(LockerStatus.AVAILABLE)
+        .latchStatus(LOCKED)
+        .version(0L)
+        .createdAt(entity.getCreatedAt())
+        .updatedAt(entity.getUpdatedAt())
+        .build();
 
-	@Test
-	void insert_whenValidLocker_shouldReturnSavedLocker() {
-		final Locker locker = Locker.builder()
-				.number(1)
-				.status(LockerStatus.AVAILABLE)
-				.latchStatus(LatchStatus.CLOSED)
-				.build();
-		final LockerEntity entity = LockerEntity.builder()
-				.id(UUID.randomUUID())
-				.number(1)
-				.status(LockerStatus.AVAILABLE)
-				.latchStatus(LatchStatus.CLOSED)
-				.version(0L)
-				.createdAt(Instant.now())
-				.updatedAt(Instant.now())
-				.build();
-		final Locker expectedLocker = Locker.builder()
-				.id(entity.getId())
-				.number(1)
-				.status(LockerStatus.AVAILABLE)
-				.latchStatus(LatchStatus.CLOSED)
-				.version(0L)
-				.createdAt(entity.getCreatedAt())
-				.updatedAt(entity.getUpdatedAt())
-				.build();
+    when(this.lockerMapper.toEntity(locker)).thenReturn(entity);
+    when(this.lockerRepository.saveAndFlush(entity)).thenReturn(entity);
+    when(this.lockerMapper.toDomain(entity)).thenReturn(expectedLocker);
 
-		when(this.lockerMapper.toEntity(locker)).thenReturn(entity);
-		when(this.lockerRepository.saveAndFlush(entity)).thenReturn(entity);
-		when(this.lockerMapper.toDomain(entity)).thenReturn(expectedLocker);
+    final Locker result = this.lockerRepositoryAdapter.insert(locker);
 
-		final Locker result = this.lockerRepositoryAdapter.insert(locker);
-
-		assertThat(result).isEqualTo(expectedLocker);
-		assertThat(result.id()).isNotNull();
-		assertThat(result.number()).isEqualTo(1);
-		assertThat(result.status()).isEqualTo(LockerStatus.AVAILABLE);
-		assertThat(result.latchStatus()).isEqualTo(LatchStatus.CLOSED);
-		verify(this.lockerMapper).toEntity(locker);
-		verify(this.lockerRepository).saveAndFlush(entity);
-		verify(this.lockerMapper).toDomain(entity);
-	}
+    assertThat(result).isEqualTo(expectedLocker);
+    assertThat(result.id()).isNotNull();
+    assertThat(result.serial()).isEqualTo(1);
+    assertThat(result.status()).isEqualTo(LockerStatus.AVAILABLE);
+    assertThat(result.latchStatus()).isEqualTo(LOCKED);
+    verify(this.lockerMapper).toEntity(locker);
+    verify(this.lockerRepository).saveAndFlush(entity);
+    verify(this.lockerMapper).toDomain(entity);
+  }
 }
 

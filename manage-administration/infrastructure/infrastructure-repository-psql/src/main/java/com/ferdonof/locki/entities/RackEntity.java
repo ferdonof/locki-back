@@ -1,6 +1,5 @@
 package com.ferdonof.locki.entities;
 
-import com.ferdonof.locki.racks.enums.RackStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -17,14 +16,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import com.ferdonof.locki.racks.enums.RackStatus;
 
 @Getter
 @Entity
@@ -40,7 +42,9 @@ public class RackEntity implements Serializable {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
-  private int number;
+  private int serial;
+
+  private int size;
 
   @Enumerated(EnumType.STRING)
   private RackStatus status;
@@ -61,5 +65,4 @@ public class RackEntity implements Serializable {
   @UpdateTimestamp
   @Column(name = "updated_at", nullable = false, updatable = true)
   private Instant updatedAt;
-
 }

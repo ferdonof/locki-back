@@ -42,9 +42,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.ferdonof.locki</groupId>
-            <artifactId>admin-rest-spec</artifactId>
-            <version>${admin-rest-spec.version}</version>
+          <groupId>com.ferdonof.locki</groupId>
+          <artifactId>admin-rest-spec</artifactId>
+          <version>${admin-rest-spec.version}</version>
         </dependency>
 
 
@@ -75,7 +75,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
-                    <!-- UNPACK ITEM API -->
                     <execution>
                         <id>unpack-incidence-rest-api</id>
                         <phase>generate-sources</phase>
@@ -108,7 +107,6 @@
                 <artifactId>openapi-generator-maven-plugin</artifactId>
                 <version>${openapigenerator.version}</version>
                 <executions>
-                    <!-- GENERATE ADMIN API -->
                     <execution>
                         <id>generate-admin-client-rest-api</id>
                         <goals>
@@ -136,6 +134,7 @@
                     </execution>
                 </executions>
             </plugin>
+
         </plugins>
     </build>
 </project>
