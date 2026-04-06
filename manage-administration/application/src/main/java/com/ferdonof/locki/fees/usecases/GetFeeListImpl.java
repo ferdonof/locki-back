@@ -17,6 +17,7 @@ public class GetFeeListImpl implements GetFeeList {
 
   @Override
   public List<Fee> execute(UUID id, String country, String currency) {
+    log.info("Getting fee list with id: {}, country: {}, currency: {}", id, country, currency);
     return this.feeRepository.findFees(Fee
         .builder()
         .id(id)

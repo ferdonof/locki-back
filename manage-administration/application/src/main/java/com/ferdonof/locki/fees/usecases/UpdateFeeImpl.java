@@ -21,6 +21,8 @@ public class UpdateFeeImpl implements UpdateFee {
 
   @Override
   public Fee execute(Fee fee) {
+    log.info("Updating fee with id: {}, lockerSize: {}, country: {}, currency: {}", fee.id(), fee.lockerSize(), fee.country(),
+        fee.currency());
     return this.transactionTemplate.execute(status -> {
       final Fee feeToUpdate = this.feeRepository
           .findById(fee.id())

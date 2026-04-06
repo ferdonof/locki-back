@@ -18,6 +18,7 @@ public class CreateFeeImpl implements CreateFee {
 
   @Override
   public Fee execute(Fee fee) {
+    log.info("Creating fee with lockerSize: {}, country: {}, currency: {}", fee.lockerSize(), fee.country(), fee.currency());
     return this.transactionTemplate.execute(status -> this.feeRepository.insert(fee));
   }
 }
