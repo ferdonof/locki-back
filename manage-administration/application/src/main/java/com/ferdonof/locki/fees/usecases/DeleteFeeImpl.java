@@ -19,9 +19,8 @@ public class DeleteFeeImpl implements DeleteFee {
 
   @Override
   public void execute(UUID id) {
-    this.transactionTemplate.execute(status -> {
-      this.feeRepository.delete(id);
-      return null;
-    });
+    this.transactionTemplate.executeWithoutResult(status ->
+        this.feeRepository.delete(id)
+    );
   }
 }

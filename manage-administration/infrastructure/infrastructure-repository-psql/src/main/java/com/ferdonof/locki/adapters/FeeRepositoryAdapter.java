@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Component;
@@ -52,5 +53,12 @@ public class FeeRepositoryAdapter implements FeeRepositoryPort {
         .stream()
         .map(this.feeMapper::toDomain)
         .toList();
+  }
+
+  @Override
+  public Optional<Fee> findById(UUID id) {
+    return this.feeRepository
+        .findById(id)
+        .map(this.feeMapper::toDomain);
   }
 }
