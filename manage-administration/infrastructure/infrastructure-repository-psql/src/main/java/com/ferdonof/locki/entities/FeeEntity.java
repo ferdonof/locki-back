@@ -2,13 +2,15 @@ package com.ferdonof.locki.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,36 +18,43 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import com.ferdonof.locki.lockers.enums.LockerSize;
 
 @Getter
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "users")
-public class UserEntity implements Serializable {
-  @Serial
-  private static final long serialVersionUID = -2714375382892124755L;
+@Table(name = "fees")
+public class FeeEntity implements Serializable {
+  @Serial private static final long serialVersionUID = 7555206700805752917L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
-  private UUID id;
+  private Long id;
 
-  @NotBlank(message = "Name is required")
-  private String name;
+  @NotNull(message = "Locker size is required")
+  @Enumerated(EnumType.STRING)
+  private LockerSize lockerSize;
 
-  @Email(message = "Email should be valid")
-  private String email;
+  @NotEmpty(message = "Country is required")
+  private String country;
 
-  private String phone;
+  @NotEmpty(message = "Currency is required")
+  private String currency;
+
+  @NotNull(message = "Price is required")
+  @Column(precision = 12, scale = 2)
+  private BigDecimal price;
 
   @Version
-  private long version;
+  private Long version;
 
   @CreationTimestamp
   @Column(name = "created_at", nullable = false, updatable = false)

@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,12 +36,16 @@ public class LocationEntity implements Serializable {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
+  @NotBlank(message = "Name is required")
   private String address;
 
+  @NotBlank(message = "Zip Code is required")
   private String code;
 
+  @NotBlank(message = "City is required")
   private String city;
 
+  @NotBlank(message = "Country is required")
   private String country;
 
   @Column(precision = 9, scale = 6)
