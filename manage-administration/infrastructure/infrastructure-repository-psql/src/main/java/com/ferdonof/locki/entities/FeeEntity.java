@@ -20,6 +20,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -37,7 +38,7 @@ public class FeeEntity implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
-  private Long id;
+  private UUID id;
 
   @NotNull(message = "Locker size is required")
   @Enumerated(EnumType.STRING)

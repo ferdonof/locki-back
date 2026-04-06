@@ -7,7 +7,7 @@ CREATE TABLE fees (
                   locker_size VARCHAR(10) NOT NULL,
                   country VARCHAR(100) NOT NULL,
                   currency VARCHAR(150) NOT NULL,
-                  amount Numeric(12, 2) NOT NULL,
+                  price Numeric(12, 2) NOT NULL,
                   version BIGINT NOT NULL DEFAULT 1,
                   created_at TIMESTAMP(6) WITH TIME ZONE NOT NULL,
                   updated_at TIMESTAMP(6) WITH TIME ZONE
