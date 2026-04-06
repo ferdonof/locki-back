@@ -12,10 +12,8 @@ CREATE TABLE users (
                       updated_at TIMESTAMP(6) WITH TIME ZONE
 );
 
-CREATE INDEX idx_users_email ON users (email);
 ALTER TABLE users ADD CONSTRAINT uk_users_email UNIQUE (email);
 
 --rollback DROP TABLE users;
---rollback DROP INDEX idx_users_email;
 --rollback ALTER TABLE users DROP CONSTRAINT uk_users_email;
 
