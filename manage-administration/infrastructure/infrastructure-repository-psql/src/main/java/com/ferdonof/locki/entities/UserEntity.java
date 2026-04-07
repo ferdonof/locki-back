@@ -7,6 +7,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,27 +29,29 @@ import org.hibernate.annotations.UpdateTimestamp;
 @NoArgsConstructor
 @Table(name = "users")
 public class UserEntity implements Serializable {
-	@Serial
-	private static final long serialVersionUID = -2714375382892124755L;
+  @Serial
+  private static final long serialVersionUID = -2714375382892124755L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	private UUID id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
-	private String name;
+  @NotBlank(message = "Name is required")
+  private String name;
 
-	private String email;
+  @Email(message = "Email should be valid")
+  private String email;
 
-	private String phone;
+  private String phone;
 
-	@Version
-	private long version;
+  @Version
+  private long version;
 
-	@CreationTimestamp
-	@Column(name = "created_at", nullable = false, updatable = false)
-	private Instant createdAt;
+  @CreationTimestamp
+  @Column(name = "created_at", nullable = false, updatable = false)
+  private Instant createdAt;
 
-	@UpdateTimestamp
-	@Column(name = "updated_at", nullable = false, updatable = true)
-	private Instant updatedAt;
+  @UpdateTimestamp
+  @Column(name = "updated_at", nullable = false, updatable = true)
+  private Instant updatedAt;
 }
