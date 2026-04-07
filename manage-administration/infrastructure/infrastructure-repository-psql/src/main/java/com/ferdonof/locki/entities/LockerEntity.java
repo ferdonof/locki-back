@@ -1,7 +1,5 @@
 package com.ferdonof.locki.entities;
 
-import com.ferdonof.locki.lockers.enums.LatchStatus;
-import com.ferdonof.locki.lockers.enums.LockerStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -17,13 +15,18 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.UUID;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import com.ferdonof.locki.lockers.enums.LatchStatus;
+import com.ferdonof.locki.lockers.enums.LockerSize;
+import com.ferdonof.locki.lockers.enums.LockerStatus;
 
 @Getter
 @Entity
@@ -39,7 +42,7 @@ public class LockerEntity implements Serializable {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
-  private int number;
+  private int serial;
 
   @ManyToOne(fetch = FetchType.LAZY)
   private RackEntity rack;
@@ -49,6 +52,9 @@ public class LockerEntity implements Serializable {
 
   @Enumerated(EnumType.STRING)
   private LatchStatus latchStatus;
+
+  @Enumerated(EnumType.STRING)
+  private LockerSize size;
 
   @Version
   private Long version;
@@ -60,5 +66,4 @@ public class LockerEntity implements Serializable {
   @UpdateTimestamp
   @Column(name = "updated_at", nullable = false, updatable = true)
   private Instant updatedAt;
-
 }

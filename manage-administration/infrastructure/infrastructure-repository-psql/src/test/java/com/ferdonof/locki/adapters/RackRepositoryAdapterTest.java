@@ -24,53 +24,59 @@ import com.ferdonof.locki.repositories.RackRepository;
 @ExtendWith(MockitoExtension.class)
 class RackRepositoryAdapterTest {
 
-	@Mock
-	private RackMapper rackMapper;
+  @Mock
+  private RackMapper rackMapper;
 
-	@Mock
-	private RackRepository rackRepository;
+  @Mock
+  private RackRepository rackRepository;
 
-	@InjectMocks
-	private RackRepositoryAdapter rackRepositoryAdapter;
+  @InjectMocks
+  private RackRepositoryAdapter rackRepositoryAdapter;
 
-	@Test
-	void findById_whenRackExists_shouldReturnRack() {
-		final UUID rackId = UUID.randomUUID();
-		final RackEntity entity = RackEntity.builder()
-				.id(rackId)
-				.number(1)
-				.version(0L)
-				.createdAt(Instant.now())
-				.updatedAt(Instant.now())
-				.build();
-		final Rack expectedRack = Rack.builder()
-				.id(rackId)
-				.number(1)
-				.version(0L)
-				.createdAt(entity.getCreatedAt())
-				.updatedAt(entity.getUpdatedAt())
-				.build();
+  @Test
+  void findById_whenRackExists_shouldReturnRack() {
+    final UUID rackId = UUID.randomUUID();
+    final RackEntity entity = RackEntity
+        .builder()
+        .id(rackId)
+        .serial(1)
+        .version(0L)
+        .createdAt(Instant.now())
+        .updatedAt(Instant.now())
+        .build();
+    final Rack expectedRack = Rack
+        .builder()
+        .id(rackId)
+        .serial(1)
+        .version(0L)
+        .createdAt(entity.getCreatedAt())
+        .updatedAt(entity.getUpdatedAt())
+        .build();
 
-		when(this.rackRepository.findById(rackId)).thenReturn(Optional.of(entity));
-		when(this.rackMapper.toDomain(entity)).thenReturn(expectedRack);
+    when(this.rackRepository.findById(rackId)).thenReturn(Optional.of(entity));
+    when(this.rackMapper.toDomain(entity)).thenReturn(expectedRack);
 
-		final Optional<Rack> result = this.rackRepositoryAdapter.findById(rackId);
+    final Optional<Rack> result = this.rackRepositoryAdapter.findById(rackId);
 
-		assertThat(result).isPresent().contains(expectedRack);
-		assertThat(result.get().id()).isEqualTo(rackId);
-		verify(this.rackRepository).findById(rackId);
-		verify(this.rackMapper).toDomain(entity);
-	}
+    assertThat(result)
+        .isPresent()
+        .contains(expectedRack);
+    assertThat(result
+        .get()
+        .id()).isEqualTo(rackId);
+    verify(this.rackRepository).findById(rackId);
+    verify(this.rackMapper).toDomain(entity);
+  }
 
-	@Test
-	void findById_whenRackDoesNotExist_shouldReturnEmpty() {
-		final UUID rackId = UUID.randomUUID();
+  @Test
+  void findById_whenRackDoesNotExist_shouldReturnEmpty() {
+    final UUID rackId = UUID.randomUUID();
 
-		when(this.rackRepository.findById(rackId)).thenReturn(Optional.empty());
+    when(this.rackRepository.findById(rackId)).thenReturn(Optional.empty());
 
-		final Optional<Rack> result = this.rackRepositoryAdapter.findById(rackId);
+    final Optional<Rack> result = this.rackRepositoryAdapter.findById(rackId);
 
-		assertThat(result).isEmpty();
-		verify(this.rackRepository).findById(rackId);
-	}
+    assertThat(result).isEmpty();
+    verify(this.rackRepository).findById(rackId);
+  }
 }

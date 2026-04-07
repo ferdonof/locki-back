@@ -13,8 +13,12 @@ public enum ConstraintValidationsConstants {
   }
 
   public static ConstraintValidationsConstants from(String value) {
+    if (value == null) {
+      return null;
+    }
+    final String normalized = value.toLowerCase();
     for (final ConstraintValidationsConstants constant : values()) {
-      if (constant.getValue().equalsIgnoreCase(value)) {
+      if (normalized.contains(constant.getValue().toLowerCase())) {
         return constant;
       }
     }

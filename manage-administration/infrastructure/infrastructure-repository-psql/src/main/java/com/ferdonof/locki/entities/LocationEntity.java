@@ -7,18 +7,20 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Getter
 @Entity
@@ -34,19 +36,23 @@ public class LocationEntity implements Serializable {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
+  @NotBlank(message = "Name is required")
   private String address;
 
+  @NotBlank(message = "Zip Code is required")
   private String code;
 
+  @NotBlank(message = "City is required")
   private String city;
 
+  @NotBlank(message = "Country is required")
   private String country;
 
   @Column(precision = 9, scale = 6)
-  private BigDecimal latitude;
+  private BigDecimal lat;
 
   @Column(precision = 9, scale = 6)
-  private BigDecimal longitude;
+  private BigDecimal lon;
 
   @Version
   private long version;
