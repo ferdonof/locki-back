@@ -20,6 +20,7 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.ferdonof.locki.fees.entities.Fee;
+import com.ferdonof.locki.fees.ports.FeeCachePort;
 import com.ferdonof.locki.fees.ports.FeeRepositoryPort;
 import com.ferdonof.locki.lockers.enums.LockerSize;
 
@@ -31,6 +32,9 @@ class CreateFeeTest {
 
   @Mock
   private FeeRepositoryPort feeRepositoryPort;
+
+  @Mock
+  private FeeCachePort feeCachePort;
 
   @InjectMocks
   private CreateFeeImpl createFeeImpl;
@@ -82,6 +86,7 @@ class CreateFeeTest {
     assertThat(result.updatedAt()).isEqualTo(now);
 
     verify(this.feeRepositoryPort).insert(any(Fee.class));
+    verify(this.feeCachePort).put(createdFee);
   }
 
   @Test
@@ -116,6 +121,7 @@ class CreateFeeTest {
 
       assertThat(result.lockerSize()).isEqualTo(size);
       assertThat(result.id()).isEqualTo(feeId);
+      verify(this.feeCachePort).put(createdFee);
     }
   }
 
@@ -150,6 +156,7 @@ class CreateFeeTest {
       final var result = this.createFeeImpl.execute(request);
 
       assertThat(result.currency()).isEqualTo(currency);
+      verify(this.feeCachePort).put(result);
     }
   }
 
@@ -183,6 +190,7 @@ class CreateFeeTest {
     final var result = this.createFeeImpl.execute(request);
 
     assertThat(result.price()).isEqualTo(price);
+    verify(this.feeCachePort).put(createdFee);
   }
 }
 

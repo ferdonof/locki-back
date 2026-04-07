@@ -23,6 +23,10 @@
             <groupId>com.ferdonof</groupId>
             <artifactId>manage-administration-application</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.ferdonof</groupId>
+            <artifactId>manage-administration-infrastructure-cache-redis</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

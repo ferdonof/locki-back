@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.ferdonof.locki.fees.ports.FeeCachePort;
 import com.ferdonof.locki.fees.ports.FeeRepositoryPort;
 
 @Slf4j
@@ -17,11 +18,18 @@ public class DeleteFeeImpl implements DeleteFee {
 
   private final FeeRepositoryPort feeRepository;
 
+  private final FeeCachePort feeCachePort;
+
   @Override
   public void execute(UUID id) {
     log.info("Deleting fee with id: {}", id);
     this.transactionTemplate.executeWithoutResult(status ->
-        this.feeRepository.delete(id)
+        this.feeRepository
+            .findById(id)
+            .ifPresent(fee -> {
+              this.feeRepository.delete(id);
+              this.feeCachePort.evictCache(fee);
+            })
     );
   }
 }

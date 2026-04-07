@@ -1,8 +1,10 @@
 package com.ferdonof.locki.fees.usecases;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -16,11 +18,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.ferdonof.locki.fees.entities.Fee;
+import com.ferdonof.locki.fees.ports.FeeCachePort;
 import com.ferdonof.locki.fees.ports.FeeRepositoryPort;
 import com.ferdonof.locki.lockers.enums.LockerSize;
 
@@ -32,6 +36,9 @@ class UpdateFeeTest {
 
   @Mock
   private FeeRepositoryPort feeRepositoryPort;
+
+  @Mock
+  private FeeCachePort feeCachePort;
 
   @InjectMocks
   private UpdateFeeImpl updateFeeImpl;
@@ -100,6 +107,7 @@ class UpdateFeeTest {
 
     verify(this.feeRepositoryPort).findById(feeId);
     verify(this.feeRepositoryPort).update(any(Fee.class));
+    verify(this.feeCachePort).put(updatedFee);
   }
 
   @Test
@@ -146,6 +154,7 @@ class UpdateFeeTest {
 
     verify(this.feeRepositoryPort).findById(feeId);
     verify(this.feeRepositoryPort).update(any(Fee.class));
+    verify(this.feeCachePort).put(updatedFee);
   }
 
   @Test
@@ -191,6 +200,7 @@ class UpdateFeeTest {
 
     verify(this.feeRepositoryPort).findById(feeId);
     verify(this.feeRepositoryPort).update(any(Fee.class));
+    verify(this.feeCachePort).put(updatedFee);
   }
 
   @Test
@@ -236,6 +246,7 @@ class UpdateFeeTest {
 
     verify(this.feeRepositoryPort).findById(feeId);
     verify(this.feeRepositoryPort).update(any(Fee.class));
+    verify(this.feeCachePort).put(updatedFee);
   }
 
   @Test
@@ -283,6 +294,41 @@ class UpdateFeeTest {
 
     verify(this.feeRepositoryPort).findById(feeId);
     verify(this.feeRepositoryPort).update(any(Fee.class));
+    verify(this.feeCachePort).put(updatedFee);
+  }
+
+  @Test
+  void execute_whenConcurrentUpdateOccurs_shouldPropagateExceptionAndAvoidCacheUpdate() {
+    final var feeId = UUID.randomUUID();
+
+    final var existingFee = Fee
+        .builder()
+        .id(feeId)
+        .lockerSize(LockerSize.MEDIUM)
+        .country("SPAIN")
+        .currency("EUR")
+        .price("20.00")
+        .version(2L)
+        .build();
+
+    final var staleRequest = Fee
+        .builder()
+        .id(feeId)
+        .price("22.50")
+        .version(1L)
+        .build();
+
+    when(this.feeRepositoryPort.findById(feeId)).thenReturn(Optional.of(existingFee));
+    when(this.feeRepositoryPort.update(any(Fee.class)))
+        .thenThrow(new OptimisticLockingFailureException("Fee was updated concurrently"));
+
+    assertThatThrownBy(() -> this.updateFeeImpl.execute(staleRequest))
+        .isInstanceOf(OptimisticLockingFailureException.class)
+        .hasMessageContaining("concurrently");
+
+    verify(this.feeRepositoryPort).findById(feeId);
+    verify(this.feeRepositoryPort).update(any(Fee.class));
+    verify(this.feeCachePort, never()).put(any(Fee.class));
   }
 }
 

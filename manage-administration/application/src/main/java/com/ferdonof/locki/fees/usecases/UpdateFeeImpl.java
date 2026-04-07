@@ -9,6 +9,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.ferdonof.locki.fees.entities.Fee;
 import com.ferdonof.locki.fees.exceptions.FeeNotFoundException;
+import com.ferdonof.locki.fees.ports.FeeCachePort;
 import com.ferdonof.locki.fees.ports.FeeRepositoryPort;
 
 @Slf4j
@@ -19,6 +20,8 @@ public class UpdateFeeImpl implements UpdateFee {
 
   private final FeeRepositoryPort feeRepository;
 
+  private final FeeCachePort feeCachePort;
+
   @Override
   public Fee execute(Fee fee) {
     log.info("Updating fee with id: {}, lockerSize: {}, country: {}, currency: {}", fee.id(), fee.lockerSize(), fee.country(),
@@ -28,7 +31,9 @@ public class UpdateFeeImpl implements UpdateFee {
           .findById(fee.id())
           .orElseThrow(() -> new FeeNotFoundException(fee.id()));
 
-      return this.feeRepository.update(this.toUpdate(fee, feeToUpdate));
+      final Fee updatedFee = this.feeRepository.update(this.toUpdate(fee, feeToUpdate));
+      this.feeCachePort.put(updatedFee);
+      return updatedFee;
     });
   }
 

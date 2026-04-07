@@ -20,11 +20,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.redis.core.RedisCallback;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 import com.ferdonof.locki.entities.FeeEntity;
 import com.ferdonof.locki.lockers.enums.LockerSize;
@@ -42,15 +46,33 @@ class FeeControllerTestIT {
   @ServiceConnection
   static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine");
 
+  @Container
+  @ServiceConnection(name = "redis")
+  static GenericContainer<?> redis = new GenericContainer<>(DockerImageName.parse("redis:7-alpine"))
+      .withExposedPorts(6379);
+
   @Autowired
   private MockMvc mockMvc;
 
   @Autowired
   private FeeRepository feeRepository;
 
+  @Autowired
+  private StringRedisTemplate redisTemplate;
+
   @BeforeEach
   void setUp() {
     this.feeRepository.deleteAll();
+    this.redisTemplate.execute((RedisCallback<Void>) connection -> {
+      connection
+          .serverCommands()
+          .flushAll();
+      return null;
+    });
+  }
+
+  private String feeCacheKey(FeeEntity fee) {
+    return "fee:%s:%s:%s".formatted(fee.getCountry(), fee.getCurrency(), fee.getLockerSize());
   }
 
   private FeeEntity persistFee(LockerSize size, String country, String currency, BigDecimal price) {
@@ -85,6 +107,15 @@ class FeeControllerTestIT {
     assertThat(persisted.getCountry()).isEqualTo("ARGENTINA");
     assertThat(persisted.getCurrency()).isEqualTo("ARS");
     assertThat(persisted.getPrice()).isEqualByComparingTo("23.50");
+
+    final String cachedValue = this.redisTemplate
+        .opsForValue()
+        .get(this.feeCacheKey(persisted));
+    assertThat(cachedValue).isNotBlank();
+    assertThat(cachedValue).contains("\"id\":\"" + persisted.getId() + "\"");
+    assertThat(cachedValue).contains("\"country\":\"ARGENTINA\"");
+    assertThat(cachedValue).contains("\"currency\":\"ARS\"");
+    assertThat(cachedValue).contains("\"lockerSize\":\"SMALL\"");
   }
 
   @Test
@@ -139,6 +170,13 @@ class FeeControllerTestIT {
   @Test
   void delete_whenFeeExists_shouldReturn204AndDeleteFee() throws Exception {
     final var persisted = this.persistFee(LockerSize.MEDIUM, "CHILE", "CLP", BigDecimal.valueOf(8.00));
+    this.redisTemplate
+        .opsForValue()
+        .set(this.feeCacheKey(persisted), "seed");
+
+    assertThat(this.redisTemplate
+        .opsForValue()
+        .get(this.feeCacheKey(persisted))).isEqualTo("seed");
 
     this.mockMvc
         .perform(delete(FEES_URL + "/{id}", persisted.getId()))
@@ -146,6 +184,9 @@ class FeeControllerTestIT {
 
     assertThat(this.feeRepository.findById(persisted.getId())).isEmpty();
     assertThat(this.feeRepository.count()).isZero();
+    assertThat(this.redisTemplate
+        .opsForValue()
+        .get(this.feeCacheKey(persisted))).isNull();
   }
 
   @Test
@@ -173,7 +214,7 @@ class FeeControllerTestIT {
     this.persistFee(LockerSize.LARGE, "SPAIN", "EUR", BigDecimal.valueOf(20.00));
 
     this.mockMvc
-        .perform(post(FEES_URL + "/search")
+        .perform(get(FEES_URL)
             .contentType(MediaType.APPLICATION_JSON)
             .content("{}"))
         .andExpect(status().isOk())
