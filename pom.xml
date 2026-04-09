@@ -39,6 +39,7 @@
 		<openapigenerator.version>7.0.1</openapigenerator.version>
 
 		<admin-rest-spec.version>2.1.0-SNAPSHOT</admin-rest-spec.version>
+		<reservations-rest-spec.version>0.0.1-SNAPSHOT</reservations-rest-spec.version>
 		<admin-async-spec.version>0.0.1</admin-async-spec.version>
 		<jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
 		<swagger-annotations.version>2.2.12</swagger-annotations.version>
@@ -50,93 +51,93 @@
 	</properties>
 
 
-		<dependencyManagement>
-			<dependencies>
-				<dependency>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-data-jdbc</artifactId>
-					<version>${spring-boot.version}</version>
-				</dependency>
-				<dependency>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-data-jpa</artifactId>
-					<version>${spring-boot.version}</version>
-				</dependency>
-				<dependency>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-data-redis</artifactId>
-					<version>${spring-boot.version}</version>
-				</dependency>
-				<dependency>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-jdbc</artifactId>
-					<version>${spring-boot.version}</version>
-				</dependency>
-				<dependency>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-validation</artifactId>
-					<version>${spring-boot.version}</version>
-				</dependency>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-jdbc</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-jpa</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-jdbc</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-validation</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
 
-				<dependency>
-					<groupId>org.liquibase</groupId>
-					<artifactId>liquibase-core</artifactId>
-					<version>${liquibase.version}</version>
-				</dependency>
-				<dependency>
-					<groupId>org.springframework.kafka</groupId>
-					<artifactId>spring-kafka</artifactId>
-					<version>${spring-kafka.version}</version>
-				</dependency>
+            <dependency>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-core</artifactId>
+                <version>${liquibase.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.kafka</groupId>
+                <artifactId>spring-kafka</artifactId>
+                <version>${spring-kafka.version}</version>
+            </dependency>
 
-				<dependency>
-					<groupId>org.postgresql</groupId>
-					<artifactId>postgresql</artifactId>
-					<version>${postgresql.version}</version>
-					<scope>runtime</scope>
-				</dependency>
-
-
-				<dependency>
-					<groupId>org.springframework.kafka</groupId>
-					<artifactId>spring-kafka-test</artifactId>
-					<version>${spring-kafka.version}</version>
-					<scope>test</scope>
-				</dependency>
-				<dependency>
-					<groupId>org.testcontainers</groupId>
-					<artifactId>kafka</artifactId>
-					<version>${testcontainers.version}</version>
-					<scope>test</scope>
-				</dependency>
-				<dependency>
-					<groupId>org.testcontainers</groupId>
-					<artifactId>postgresql</artifactId>
-					<version>${testcontainers.version}</version>
-					<scope>test</scope>
-				</dependency>
-
-				<!-- OpenAPI Generator dependencies -->
-				<dependency>
-					<groupId>org.openapitools</groupId>
-					<artifactId>jackson-databind-nullable</artifactId>
-					<version>${jackson-databind-nullable.version}</version>
-				</dependency>
-				<dependency>
-					<groupId>io.swagger.core.v3</groupId>
-					<artifactId>swagger-annotations</artifactId>
-					<version>${swagger-annotations.version}</version>
-				</dependency>
-				<dependency>
-					<groupId>jakarta.validation</groupId>
-					<artifactId>jakarta.validation-api</artifactId>
-					<version>${jakarta.validation-api.version}</version>
-				</dependency>
+            <dependency>
+                <groupId>org.postgresql</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${postgresql.version}</version>
+                <scope>runtime</scope>
+            </dependency>
 
 
-				<!-- custom dependencies -->
-			</dependencies>
-		</dependencyManagement>
+            <dependency>
+                <groupId>org.springframework.kafka</groupId>
+                <artifactId>spring-kafka-test</artifactId>
+                <version>${spring-kafka.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>kafka</artifactId>
+                <version>${testcontainers.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>postgresql</artifactId>
+                <version>${testcontainers.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <!-- OpenAPI Generator dependencies -->
+            <dependency>
+                <groupId>org.openapitools</groupId>
+                <artifactId>jackson-databind-nullable</artifactId>
+                <version>${jackson-databind-nullable.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>${swagger-annotations.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.validation</groupId>
+                <artifactId>jakarta.validation-api</artifactId>
+                <version>${jakarta.validation-api.version}</version>
+            </dependency>
+
+
+            <!-- custom dependencies -->
+        </dependencies>
+    </dependencyManagement>
 
 	<dependencies>
 		<dependency>
