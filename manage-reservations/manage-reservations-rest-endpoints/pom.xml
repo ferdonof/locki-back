@@ -13,6 +13,7 @@
     <artifactId>manage-reservations-rest-endpoints</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <module>boot</module>
         <module>reservations-rest-endpoints</module>
     </modules>
 
