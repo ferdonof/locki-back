@@ -43,6 +43,11 @@
                 <artifactId>manage-reservations-infrastructure-repository-psql</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.ferdonof</groupId>
+                <artifactId>manage-reservations-infrastructure-cache-redis</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>

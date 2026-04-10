@@ -7,6 +7,7 @@
         <groupId>com.ferdonof</groupId>
         <artifactId>manage-reservations-infrastructure</artifactId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>manage-reservations-infrastructure-cache-redis</artifactId>
