@@ -42,44 +42,45 @@ public class ReservationEntity implements Serializable {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
-  @NotNull
+  @NotNull(message = "User ID is required")
   private UUID userId;
 
-  @NotNull
+  @NotNull(message = "Locker ID is required")
   private UUID lockerId;
 
-  @NotNull
+  @NotNull(message = "Rack ID is required")
   private UUID rackId;
 
   @Min(1)
   private int position;
 
-  @NotEmpty
+  @NotEmpty(message = "Address is required")
   private String address;
 
-  @NotEmpty
+  @NotEmpty(message = "City is required")
   private String city;
 
-  @NotEmpty
+  @NotEmpty(message = "Country is required")
   private String country;
 
-  @NotEmpty
+  @NotEmpty(message = "Zip code is required")
   private String zipCode;
 
-  @NotEmpty
+  @NotEmpty(message = "Currency is required")
   private String currency;
 
-  @NotNull
+  @NotNull(message = "Price is required")
   @DecimalMin("0.00")
   private BigDecimal price;
 
-  @NotNull
+  @NotNull(message = "Reservation status is required")
   @Enumerated(EnumType.STRING)
   private ReservationStatus status;
 
-  @NotNull
+  @NotNull(message = "Start date is required")
   private Instant startDate;
 
+  @NotNull(message = "End date is required")
   private Instant endDate;
 
   @Version

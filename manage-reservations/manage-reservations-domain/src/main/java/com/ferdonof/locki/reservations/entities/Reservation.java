@@ -10,6 +10,6 @@ import com.ferdonof.locki.reservations.enums.ReservationStatus;
 
 @Builder(toBuilder = true)
 public record Reservation(UUID id, UUID lockerId, UUID rackId, int position, String address, String city, String country, String zipCode,
-                          String currency, BigDecimal price, ReservationStatus status, Instant startDate, Instant endDate,
+                          String currency, BigDecimal price, ReservationStatus status, Instant startDate, Instant endDate, UUID userId,
                           Long version, Instant createdAt, Instant updatedAt) {
 }
