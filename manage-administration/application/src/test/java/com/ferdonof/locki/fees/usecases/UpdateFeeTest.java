@@ -8,6 +8,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
@@ -64,7 +65,7 @@ class UpdateFeeTest {
         .lockerSize(LockerSize.MEDIUM)
         .country("SPAIN")
         .currency("EUR")
-        .price("20.00")
+        .price(new BigDecimal("20.00"))
         .version(1L)
         .createdAt(createdAt)
         .updatedAt(updatedAt)
@@ -76,7 +77,7 @@ class UpdateFeeTest {
         .lockerSize(LockerSize.MEDIUM)
         .country("SPAIN")
         .currency("EUR")
-        .price("25.50")
+        .price(new BigDecimal("25.50"))
         .build();
 
     final var updatedFee = Fee
@@ -85,7 +86,7 @@ class UpdateFeeTest {
         .lockerSize(LockerSize.MEDIUM)
         .country("SPAIN")
         .currency("EUR")
-        .price("25.50")
+        .price(new BigDecimal("25.50"))
         .version(2L)
         .createdAt(createdAt)
         .updatedAt(updatedAt)
@@ -113,8 +114,8 @@ class UpdateFeeTest {
   @Test
   void execute_whenUpdatingPrice_shouldUpdateSuccessfully() {
     final var feeId = UUID.randomUUID();
-    final var oldPrice = "10.00";
-    final var newPrice = "15.50";
+    final var oldPrice = new BigDecimal("10.00");
+    final var newPrice = new BigDecimal("15.50");
 
     final var existingFee = Fee
         .builder()
@@ -169,7 +170,7 @@ class UpdateFeeTest {
         .lockerSize(oldSize)
         .country("MEXICO")
         .currency("MXN")
-        .price("30.00")
+        .price(new BigDecimal("30.00"))
         .version(1L)
         .build();
 
@@ -185,7 +186,7 @@ class UpdateFeeTest {
         .lockerSize(newSize)
         .country("MEXICO")
         .currency("MXN")
-        .price("30.00")
+        .price(new BigDecimal("30.00"))
         .version(2L)
         .build();
 
@@ -215,7 +216,7 @@ class UpdateFeeTest {
         .lockerSize(LockerSize.MEDIUM)
         .country("USA")
         .currency(oldCurrency)
-        .price("20.00")
+        .price(new BigDecimal("20.00"))
         .version(1L)
         .build();
 
@@ -231,7 +232,7 @@ class UpdateFeeTest {
         .lockerSize(LockerSize.MEDIUM)
         .country("USA")
         .currency(newCurrency)
-        .price("20.00")
+        .price(new BigDecimal("20.00"))
         .version(2L)
         .build();
 
@@ -259,7 +260,7 @@ class UpdateFeeTest {
         .lockerSize(LockerSize.SMALL)
         .country("CHILE")
         .currency("CLP")
-        .price("5.00")
+        .price(new BigDecimal("5.00"))
         .version(10L)
         .build();
 
@@ -269,7 +270,7 @@ class UpdateFeeTest {
         .lockerSize(LockerSize.SMALL)
         .country("CHILE")
         .currency("CLP")
-        .price("5.00")
+        .price(new BigDecimal("5.00"))
         .version(10L)
         .build();
 
@@ -279,7 +280,7 @@ class UpdateFeeTest {
         .lockerSize(LockerSize.SMALL)
         .country("CHILE")
         .currency("CLP")
-        .price("5.00")
+        .price(new BigDecimal("5.00"))
         .version(11L)
         .build();
 
@@ -307,14 +308,14 @@ class UpdateFeeTest {
         .lockerSize(LockerSize.MEDIUM)
         .country("SPAIN")
         .currency("EUR")
-        .price("20.00")
+        .price(new BigDecimal("20.00"))
         .version(2L)
         .build();
 
     final var staleRequest = Fee
         .builder()
         .id(feeId)
-        .price("22.50")
+        .price(new BigDecimal("22.50"))
         .version(1L)
         .build();
 
