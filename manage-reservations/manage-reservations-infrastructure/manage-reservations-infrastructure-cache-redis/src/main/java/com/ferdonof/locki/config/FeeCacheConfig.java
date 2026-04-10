@@ -1,4 +1,4 @@
-package config;
+package com.ferdonof.locki.config;
 
 import org.springframework.context.annotation.Configuration;
 

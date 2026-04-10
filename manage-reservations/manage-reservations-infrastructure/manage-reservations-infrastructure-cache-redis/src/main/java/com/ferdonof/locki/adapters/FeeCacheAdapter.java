@@ -1,9 +1,7 @@
-package adapters;
+package com.ferdonof.locki.adapters;
 
-import entities.CachedFee;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import mappers.CachedFeeMapper;
 
 import java.time.Duration;
 import java.util.Optional;
@@ -13,8 +11,10 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ferdonof.locki.entities.CachedFee;
 import com.ferdonof.locki.fee.entities.Fee;
 import com.ferdonof.locki.fee.ports.FeeCachePort;
+import com.ferdonof.locki.mappers.CachedFeeMapper;
 
 @Slf4j
 @Component

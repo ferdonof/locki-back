@@ -1,4 +1,4 @@
-package entities;
+package com.ferdonof.locki.entities;
 
 import lombok.Builder;
 

@@ -1,6 +1,4 @@
-package mappers;
-
-import entities.CachedFee;
+package com.ferdonof.locki.mappers;
 
 import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.InjectionStrategy;
@@ -8,6 +6,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.NullValueMappingStrategy;
 
+import com.ferdonof.locki.entities.CachedFee;
 import com.ferdonof.locki.fee.entities.Fee;
 
 @Mapper(collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED,
