@@ -1,6 +1,8 @@
 {
   "locationId": "d3aff49e-fa33-427c-b96c-5584485cff47",
   "lockerId": "82b25906-2166-4cd0-8c6a-607d209d8b31",
+  "rackId": "259f0b04-ca24-4bca-906a-10c813518e21",
   "userId": "16a54c37-eace-470e-83dd-b17dfb2ef216",
-  "startDate": "2024-06-01T10:00:00Z"
+  "startDate": "2024-06-01T10:00:00Z",
+  "endDate": "2024-06-01T12:00:00Z"
 }
