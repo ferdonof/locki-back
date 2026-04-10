@@ -63,7 +63,7 @@ class FeeMapperTest {
         .lockerSize(LockerSize.MEDIUM)
         .country("SPAIN")
         .currency("EUR")
-        .price("9.99")
+        .price(new BigDecimal("9.99"))
         .version(2L)
         .createdAt(now)
         .updatedAt(now)

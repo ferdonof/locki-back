@@ -8,6 +8,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
@@ -136,7 +137,7 @@ class DeleteFeeTest {
         .lockerSize(LockerSize.SMALL)
         .country("ARGENTINA")
         .currency("ARS")
-        .price("10.50")
+        .price(new BigDecimal("10.50"))
         .version(1L)
         .createdAt(now)
         .updatedAt(now)

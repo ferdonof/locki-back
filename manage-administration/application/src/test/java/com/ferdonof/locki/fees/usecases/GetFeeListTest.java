@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -40,7 +41,7 @@ class GetFeeListTest {
         .lockerSize(LockerSize.SMALL)
         .country(country)
         .currency(currency)
-        .price("10.50")
+        .price(new BigDecimal("10.50"))
         .version(1L)
         .createdAt(Instant.now())
         .updatedAt(Instant.now())
@@ -95,7 +96,7 @@ class GetFeeListTest {
         .lockerSize(LockerSize.SMALL)
         .country(country)
         .currency(currency)
-        .price("5.00")
+        .price(new BigDecimal("5.00"))
         .build();
 
     final var fee2 = Fee
@@ -104,7 +105,7 @@ class GetFeeListTest {
         .lockerSize(LockerSize.MEDIUM)
         .country(country)
         .currency(currency)
-        .price("10.00")
+        .price(new BigDecimal("10.00"))
         .build();
 
     final var fee3 = Fee
@@ -113,7 +114,7 @@ class GetFeeListTest {
         .lockerSize(LockerSize.LARGE)
         .country(country)
         .currency(currency)
-        .price("15.00")
+        .price(new BigDecimal("15.00"))
         .build();
 
     final var fees = List.of(fee1, fee2, fee3);
@@ -139,7 +140,7 @@ class GetFeeListTest {
         .lockerSize(LockerSize.MEDIUM)
         .country(country)
         .currency(currency)
-        .price("20.00")
+        .price(new BigDecimal("20.00"))
         .build();
 
     when(this.feeRepositoryPort.findFees(any(Fee.class))).thenReturn(List.of(fee));
@@ -168,7 +169,7 @@ class GetFeeListTest {
         .lockerSize(LockerSize.LARGE)
         .country("UNITED_KINGDOM")
         .currency(currency)
-        .price("25.00")
+        .price(new BigDecimal("25.00"))
         .build();
 
     when(this.feeRepositoryPort.findFees(any(Fee.class))).thenReturn(List.of(fee));
@@ -197,7 +198,7 @@ class GetFeeListTest {
         .lockerSize(LockerSize.SMALL)
         .country(country)
         .currency("EUR")
-        .price("12.50")
+        .price(new BigDecimal("12.50"))
         .build();
 
     when(this.feeRepositoryPort.findFees(any(Fee.class))).thenReturn(List.of(fee));
@@ -223,7 +224,7 @@ class GetFeeListTest {
         .lockerSize(LockerSize.SMALL)
         .country("ARGENTINA")
         .currency("ARS")
-        .price("10.00")
+        .price(new BigDecimal("10.00"))
         .build();
 
     final var fee2 = Fee
@@ -232,7 +233,7 @@ class GetFeeListTest {
         .lockerSize(LockerSize.MEDIUM)
         .country("SPAIN")
         .currency("EUR")
-        .price("20.00")
+        .price(new BigDecimal("20.00"))
         .build();
 
     final var fees = List.of(fee1, fee2);
@@ -257,7 +258,7 @@ class GetFeeListTest {
         .lockerSize(LockerSize.SMALL)
         .country(country)
         .currency("ARS")
-        .price("10.00")
+        .price(new BigDecimal("10.00"))
         .build();
 
     final var feeEUR = Fee
@@ -266,7 +267,7 @@ class GetFeeListTest {
         .lockerSize(LockerSize.SMALL)
         .country(country)
         .currency("EUR")
-        .price("20.00")
+        .price(new BigDecimal("20.00"))
         .build();
 
     when(this.feeRepositoryPort.findFees(any(Fee.class))).thenReturn(List.of(feeARS));
@@ -292,7 +293,7 @@ class GetFeeListTest {
         .lockerSize(LockerSize.MEDIUM)
         .country("ITALY")
         .currency("EUR")
-        .price("18.75")
+        .price(new BigDecimal("18.75"))
         .version(3L)
         .createdAt(now.minusSeconds(86400))
         .updatedAt(now)
@@ -309,7 +310,7 @@ class GetFeeListTest {
     assertThat(retrievedFee.lockerSize()).isEqualTo(LockerSize.MEDIUM);
     assertThat(retrievedFee.country()).isEqualTo("ITALY");
     assertThat(retrievedFee.currency()).isEqualTo("EUR");
-    assertThat(retrievedFee.price()).isEqualTo("18.75");
+    assertThat(retrievedFee.price()).isEqualTo(new BigDecimal("18.75"));
     assertThat(retrievedFee.version()).isEqualTo(3L);
     assertThat(retrievedFee.createdAt()).isEqualTo(now.minusSeconds(86400));
     assertThat(retrievedFee.updatedAt()).isEqualTo(now);

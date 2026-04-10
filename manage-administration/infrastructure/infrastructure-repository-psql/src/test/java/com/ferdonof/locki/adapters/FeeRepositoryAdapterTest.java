@@ -226,7 +226,7 @@ class FeeRepositoryAdapterTest {
         .lockerSize(LockerSize.SMALL)
         .country(COUNTRY)
         .currency(CURRENCY)
-        .price("23.50")
+        .price(new BigDecimal("23.50"))
         .version(1L)
         .createdAt(Instant.now())
         .updatedAt(Instant.now())

@@ -23,7 +23,7 @@ public class FeeCacheAdapter implements FeeCachePort {
 
   private static final Duration TTL = Duration.ofHours(24);
 
-  private static final String KEY_PREFIX = "fee:%s:%s:%s";
+  private static final String KEY_PREFIX = "fee:%s:%s";
 
   private final CachedFeeMapper cachedFeeMapper;
 
@@ -39,7 +39,7 @@ public class FeeCacheAdapter implements FeeCachePort {
     }
 
     final CachedFee cachedFee = this.cachedFeeMapper.toCachedFee(fee);
-    final String key = KEY_PREFIX.formatted(cachedFee.country(), cachedFee.currency(), cachedFee.lockerSize());
+    final String key = KEY_PREFIX.formatted(cachedFee.country(), cachedFee.lockerSize());
 
     try {
       final String payload = this.objectMapper.writeValueAsString(cachedFee);
@@ -55,7 +55,7 @@ public class FeeCacheAdapter implements FeeCachePort {
 
   @Override
   public Optional<Fee> get(Fee fee) {
-    final String key = KEY_PREFIX.formatted(fee.country(), fee.currency(), fee.lockerSize());
+    final String key = KEY_PREFIX.formatted(fee.country(), fee.lockerSize());
     final String strFee = this.redisTemplate
         .opsForValue()
         .get(key);
@@ -77,7 +77,7 @@ public class FeeCacheAdapter implements FeeCachePort {
   @Override
   public void evictCache(Fee fee) {
     if (fee != null) {
-      this.redisTemplate.delete(KEY_PREFIX.formatted(fee.country(), fee.currency(), fee.lockerSize()));
+      this.redisTemplate.delete(KEY_PREFIX.formatted(fee.country(), fee.lockerSize()));
     }
   }
 
