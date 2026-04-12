@@ -191,6 +191,62 @@ class ReservationsControllerTestIT {
     assertThat(this.reservationsRepository.count()).isZero();
   }
 
+  @Test
+  void create_withRackOnlyAndSlotAvailable_thenReturnCreated() throws Exception {
+    final ClassPathResource content = new ClassPathResource("mocks.requests/create-reservation-request-only-rackId.json");
+    final UUID rackId = UUID.fromString("4cff63a5-74c9-4b0a-8ee1-3c9cad8a97bb");
+    final RackedLockerEntity rackedLocker1 = buildRackedLocker(UUID.randomUUID(), rackId);
+    final RackedLockerEntity rackedLocker2 = buildRackedLocker(UUID.randomUUID(), rackId);
+    final RackedLockerEntity rackedLocker3 = buildRackedLocker(UUID.randomUUID(), rackId);
+
+    final CachedFee fee = buildCachedFee();
+
+    this.buildRedisKey(fee);
+
+    this.rackedLockersRepository.saveAndFlush(rackedLocker1);
+    this.rackedLockersRepository.saveAndFlush(rackedLocker2);
+    this.rackedLockersRepository.saveAndFlush(rackedLocker3);
+
+    this.mockMvc
+        .perform(MockMvcRequestBuilders
+            .post(RESERVATIONS_URL)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(content.getContentAsByteArray()))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.id").isNotEmpty())
+        .andExpect(jsonPath("$.lockerId").isNotEmpty())
+        .andExpect(jsonPath("$.country").value("ARGENTINA"))
+        .andExpect(jsonPath("$.currency").value("ARS"))
+        .andExpect(jsonPath("$.price").value(23.5))
+        .andExpect(jsonPath("$.startDate").value("2024-06-01T10:00:00Z"))
+        .andExpect(jsonPath("$.endDate").value("2024-06-01T12:00:00Z"));
+
+    assertThat(this.rackedLockersRepository.count()).isEqualTo(3);
+    assertThat(this.reservationsRepository.count()).isOne();
+    assertThat(this.reservationsRepository
+        .findAll()
+        .getFirst()
+        .getRackId()).isEqualTo(rackId);
+  }
+
+  @Test
+  void execute_withRackOnlyAndLockerNotExists_thenReturnNotFound() throws Exception {
+    final ClassPathResource content = new ClassPathResource("mocks.requests/create-reservation-request-only-rackId.json");
+
+    final CachedFee fee = buildCachedFee();
+
+    this.buildRedisKey(fee);
+
+    this.mockMvc
+        .perform(MockMvcRequestBuilders
+            .post(RESERVATIONS_URL)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(content.getContentAsByteArray()))
+        .andExpect(status().isNotFound());
+
+    assertThat(this.reservationsRepository.count()).isZero();
+  }
+
   private static CachedFee buildCachedFee() {
     return CachedFee
         .builder()

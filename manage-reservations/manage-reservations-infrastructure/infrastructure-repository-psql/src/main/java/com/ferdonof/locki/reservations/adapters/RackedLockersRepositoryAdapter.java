@@ -3,6 +3,7 @@ package com.ferdonof.locki.reservations.adapters;
 import lombok.RequiredArgsConstructor;
 import reservations.ports.RackedLockersRepositoryPort;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -59,6 +60,13 @@ public class RackedLockersRepositoryAdapter implements RackedLockersRepositoryPo
   public Optional<RackedLocker> findByLockerId(UUID id) {
     return this.rackedLockersRepository
         .findByLockerId(id)
+        .map(this.rackedLockerMapper::toDomain);
+  }
+
+  @Override
+  public Optional<RackedLocker> findAnyAvailableByRackId(UUID rackId, Instant startDate, Instant endDate) {
+    return this.rackedLockersRepository
+        .findOneAvailableByRackIdAndTimeSlot(rackId, startDate, endDate)
         .map(this.rackedLockerMapper::toDomain);
   }
 }

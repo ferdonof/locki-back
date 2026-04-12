@@ -19,4 +19,5 @@ public interface RackedLockersRepositoryPort {
 
   Optional<RackedLocker> findByLockerId(UUID uuid);
 
+  Optional<RackedLocker> findAnyAvailableByRackId(UUID rackId, Instant startDate, Instant endDate);
 }

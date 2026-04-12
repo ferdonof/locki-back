@@ -8,7 +8,6 @@ import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.stereotype.Component;
 
 import com.ferdonof.locki.reservations.entities.Reservation;
@@ -48,17 +47,6 @@ public class ReservationsRepositoryAdapter implements ReservationsRepositoryPort
   }
 
   @Override
-  @NativeQuery("""
-        SELECT r FROM reservations r
-        JOIN racked_lockers rl ON r.locker_id = rl.locker_id and r.rack_id = rl.rack_id
-        WHERE r.lockerId = :lockerId
-          AND r.startDate >= :from
-          AND r.endDate < :to
-          AND r.status = :status
-          AND rl.status NOT IN ('MAINTENANCE', 'OUT_OF_SERVICE')
-          AND rl.rack_status = 'ACTIVE'
-          LIMIT 1
-      """)
   public Optional<Reservation> findByLockerUnavailableInTimeSlot(UUID lockerId, Instant from, Instant to) {
     return this.reservationsRepository
         .findByLockerIdAndStartDateGreaterThanEqualAndEndDateLessThanEqualAndStatusIs(lockerId, from, to, ACTIVE)

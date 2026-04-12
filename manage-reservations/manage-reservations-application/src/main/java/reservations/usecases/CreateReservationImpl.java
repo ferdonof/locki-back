@@ -34,15 +34,9 @@ public class CreateReservationImpl implements CreateReservation {
     log.info("Creating reservation for locker with id '{}'", request.lockerId());
     return this.transactionTemplate.execute(status -> {
 
-      this.reservationsRepositoryPort
-          .findByLockerUnavailableInTimeSlot(request.lockerId(), request.startDate(), request.endDate())
-          .ifPresent(reservation -> {
-            throw new LockerUnavailableException(request.lockerId());
-          });
-
-      final RackedLocker rackedLocker = this.rackedLockersRepositoryPort
-          .findByLockerId(request.lockerId())
-          .orElseThrow(() -> new RackedLockerNotFoundException(request.lockerId()));
+      final RackedLocker rackedLocker = request.lockerId() != null
+          ? this.withSpecificLocker(request)
+          : this.withRackOnly(request);
 
       final Fee fee = this.feeCachePort
           .get(Fee
@@ -75,5 +69,23 @@ public class CreateReservationImpl implements CreateReservation {
         .endDate(request.endDate())
         .userId(request.userId())
         .build();
+  }
+
+  private RackedLocker withSpecificLocker(CreateReservationRequest request) {
+    this.reservationsRepositoryPort
+        .findByLockerUnavailableInTimeSlot(request.lockerId(), request.startDate(), request.endDate())
+        .ifPresent(reservation -> {
+          throw new LockerUnavailableException(request.lockerId());
+        });
+
+    return this.rackedLockersRepositoryPort
+        .findByLockerId(request.lockerId())
+        .orElseThrow(() -> new RackedLockerNotFoundException(request.lockerId()));
+  }
+
+  private RackedLocker withRackOnly(CreateReservationRequest request) {
+    return this.rackedLockersRepositoryPort
+        .findAnyAvailableByRackId(request.rackId(), request.startDate(), request.endDate())
+        .orElseThrow(() -> new RackedLockerNotFoundException(request.lockerId()));
   }
 }

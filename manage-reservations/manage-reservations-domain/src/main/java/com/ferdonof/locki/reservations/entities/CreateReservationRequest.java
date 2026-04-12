@@ -6,5 +6,5 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Builder(toBuilder = true)
-public record CreateReservationRequest(UUID locationId, UUID lockerId, UUID userId, Instant startDate, Instant endDate) {
+public record CreateReservationRequest(UUID locationId, UUID rackId, UUID lockerId, UUID userId, Instant startDate, Instant endDate) {
 }
