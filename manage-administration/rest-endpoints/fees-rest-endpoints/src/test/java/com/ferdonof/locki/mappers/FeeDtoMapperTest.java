@@ -2,6 +2,7 @@ package com.ferdonof.locki.mappers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -77,7 +78,7 @@ class FeeDtoMapperTest {
         .lockerSize(LockerSize.LARGE)
         .country("MEXICO")
         .currency("MXN")
-        .price("99.99")
+        .price(new BigDecimal("99.99"))
         .version(2L)
         .createdAt(now)
         .updatedAt(now)

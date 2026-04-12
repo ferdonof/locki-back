@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -56,7 +57,7 @@ class CreateFeeTest {
         .lockerSize(LockerSize.SMALL)
         .country("ARGENTINA")
         .currency("ARS")
-        .price("10.50")
+        .price(new BigDecimal("10.50"))
         .build();
 
     final var createdFee = Fee
@@ -65,7 +66,7 @@ class CreateFeeTest {
         .lockerSize(LockerSize.SMALL)
         .country("ARGENTINA")
         .currency("ARS")
-        .price("10.50")
+        .price(new BigDecimal("10.50"))
         .version(1L)
         .createdAt(now)
         .updatedAt(now)
@@ -100,7 +101,7 @@ class CreateFeeTest {
           .lockerSize(size)
           .country("SPAIN")
           .currency("EUR")
-          .price("15.00")
+          .price(new BigDecimal("15.00"))
           .build();
 
       final var createdFee = Fee
@@ -109,7 +110,7 @@ class CreateFeeTest {
           .lockerSize(size)
           .country("SPAIN")
           .currency("EUR")
-          .price("15.00")
+          .price(new BigDecimal("15.00"))
           .version(1L)
           .createdAt(Instant.now())
           .updatedAt(Instant.now())
@@ -136,7 +137,7 @@ class CreateFeeTest {
           .lockerSize(LockerSize.MEDIUM)
           .country("USA")
           .currency(currency)
-          .price("20.00")
+          .price(new BigDecimal("20.00"))
           .build();
 
       final var createdFee = Fee
@@ -145,7 +146,7 @@ class CreateFeeTest {
           .lockerSize(LockerSize.MEDIUM)
           .country("USA")
           .currency(currency)
-          .price("20.00")
+          .price(new BigDecimal("20.00"))
           .version(1L)
           .createdAt(Instant.now())
           .updatedAt(Instant.now())
@@ -163,7 +164,7 @@ class CreateFeeTest {
   @Test
   void execute_withDecimalPrice_shouldPreservePrice() {
     final var feeId = UUID.randomUUID();
-    final var price = "99.99";
+    final var price = new BigDecimal("99.99");
 
     final var request = Fee
         .builder()

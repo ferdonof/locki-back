@@ -13,8 +13,8 @@ CREATE TABLE fees (
                   updated_at TIMESTAMP(6) WITH TIME ZONE
 );
 
-ALTER TABLE fees ADD CONSTRAINT uk_fees_locker_size_country_currency UNIQUE (locker_size ,country, currency);
+ALTER TABLE fees ADD CONSTRAINT uk_fees_locker_size_country UNIQUE (locker_size ,country);
 
 --rollback DROP TABLE fees;
---rollback ALTER TABLE fees DROP CONSTRAINT uk_fees_locker_size_country_currency;
+--rollback ALTER TABLE fees DROP CONSTRAINT uk_fees_locker_size_country;
 
