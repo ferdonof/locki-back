@@ -4,9 +4,11 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 import jakarta.validation.constraints.DecimalMin;
@@ -54,17 +56,8 @@ public class ReservationEntity implements Serializable {
   @Min(1)
   private int position;
 
-  @NotEmpty(message = "Address is required")
-  private String address;
-
-  @NotEmpty(message = "City is required")
-  private String city;
-
-  @NotEmpty(message = "Country is required")
-  private String country;
-
-  @NotEmpty(message = "Zip code is required")
-  private String zipCode;
+  @ManyToOne(fetch = FetchType.EAGER)
+  private LocationEntity location;
 
   @NotEmpty(message = "Currency is required")
   private String currency;

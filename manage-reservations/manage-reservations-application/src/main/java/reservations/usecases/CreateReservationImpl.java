@@ -42,9 +42,13 @@ public class CreateReservationImpl implements CreateReservation {
           .get(Fee
               .builder()
               .lockerSize(rackedLocker.size())
-              .country(rackedLocker.country())
+              .country(rackedLocker
+                  .location()
+                  .country())
               .build())
-          .orElseThrow(() -> new FeeNotFoundException(rackedLocker.size(), rackedLocker.country()));
+          .orElseThrow(() -> new FeeNotFoundException(rackedLocker.size(), rackedLocker
+              .location()
+              .country()));
 
       final Reservation reservation = this.buildReservation(request, rackedLocker, fee);
 
@@ -58,16 +62,13 @@ public class CreateReservationImpl implements CreateReservation {
         .lockerId(rackedLocker.lockerId())
         .rackId(rackedLocker.rackId())
         .position(rackedLocker.position())
-        .address(rackedLocker.address())
-        .city(rackedLocker.city())
-        .country(rackedLocker.country())
-        .zipCode(rackedLocker.zipCode())
         .price(fee.price())
         .currency(fee.currency())
         .status(ACTIVE)
         .startDate(request.startDate())
         .endDate(request.endDate())
         .userId(request.userId())
+        .location(rackedLocker.location())
         .build();
   }
 

@@ -6,6 +6,7 @@ import java.time.OffsetDateTime;
 import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.NullValueMappingStrategy;
 
@@ -23,6 +24,9 @@ public interface ReservationDtoMapper {
 
   CreateReservationRequest toDomain(CreateReservationRequestDTO request);
 
+  @Mapping(target = "address", source = "location.address")
+  @Mapping(target = "country", source = "location.country")
+  @Mapping(target = "city", source = "location.city")
   ReservationDTO toDto(Reservation reservation);
 
   default Instant map(OffsetDateTime date) {

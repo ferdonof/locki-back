@@ -34,9 +34,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ferdonof.locki.entities.CachedFee;
 import com.ferdonof.locki.fee.entities.Fee;
 import com.ferdonof.locki.lockers.enums.RackStatus;
+import com.ferdonof.locki.reservations.entities.LocationEntity;
 import com.ferdonof.locki.reservations.entities.RackedLockerEntity;
 import com.ferdonof.locki.reservations.entities.ReservationEntity;
 import com.ferdonof.locki.reservations.enums.ReservationStatus;
+import com.ferdonof.locki.reservations.repositories.LocationsRepository;
 import com.ferdonof.locki.reservations.repositories.RackedLockersRepository;
 import com.ferdonof.locki.reservations.repositories.ReservationsRepository;
 
@@ -80,12 +82,16 @@ class ReservationsControllerTestIT {
   private ReservationsRepository reservationsRepository;
 
   @Autowired
+  private LocationsRepository locationsRepository;
+
+  @Autowired
   private StringRedisTemplate redisTemplate;
 
   @BeforeEach
   void setUp() {
     this.reservationsRepository.deleteAll();
     this.rackedLockersRepository.deleteAll();
+    this.locationsRepository.deleteAll();
     this.redisTemplate
         .getConnectionFactory()
         .getConnection()
@@ -98,7 +104,10 @@ class ReservationsControllerTestIT {
     final ClassPathResource content = new ClassPathResource("mocks.requests/create-reservation-request.json");
     final UUID lockerId = UUID.fromString("82b25906-2166-4cd0-8c6a-607d209d8b31");
     final UUID rackId = UUID.fromString("259f0b04-ca24-4bca-906a-10c813518e21");
-    final RackedLockerEntity rackedLocker = buildRackedLocker(lockerId, rackId);
+
+    final LocationEntity location = this.locationsRepository.saveAndFlush(buildLocation());
+
+    final RackedLockerEntity rackedLocker = buildRackedLocker(lockerId, rackId, location);
 
     final CachedFee fee = buildCachedFee();
 
@@ -135,14 +144,16 @@ class ReservationsControllerTestIT {
     final ClassPathResource content = new ClassPathResource("mocks.requests/create-reservation-request.json");
     final UUID lockerId = UUID.fromString("82b25906-2166-4cd0-8c6a-607d209d8b31");
     final UUID rackId = UUID.fromString("259f0b04-ca24-4bca-906a-10c813518e21");
-    final RackedLockerEntity rackedLocker = buildRackedLocker(lockerId, rackId);
+    final LocationEntity location = this.locationsRepository.saveAndFlush(buildLocation());
+
+    final RackedLockerEntity rackedLocker = buildRackedLocker(lockerId, rackId, location);
 
     final CachedFee fee = buildCachedFee();
 
     this.buildRedisKey(fee);
 
     final RackedLockerEntity rackedLockerEntity = this.rackedLockersRepository.saveAndFlush(rackedLocker);
-    this.reservationsRepository.saveAndFlush(buildReservationEntity(rackedLockerEntity, fee));
+    this.reservationsRepository.saveAndFlush(buildReservationEntity(rackedLockerEntity, fee, location));
 
     this.mockMvc
         .perform(MockMvcRequestBuilders
@@ -159,7 +170,9 @@ class ReservationsControllerTestIT {
     final ClassPathResource content = new ClassPathResource("mocks.requests/create-reservation-request.json");
     final UUID lockerId = UUID.fromString("82b25906-2166-4cd0-8c6a-607d209d8b31");
     final UUID rackId = UUID.fromString("259f0b04-ca24-4bca-906a-10c813518e21");
-    final RackedLockerEntity rackedLocker = buildRackedLocker(lockerId, rackId);
+
+    final LocationEntity location = this.locationsRepository.saveAndFlush(buildLocation());
+    final RackedLockerEntity rackedLocker = buildRackedLocker(lockerId, rackId, location);
 
     this.rackedLockersRepository.saveAndFlush(rackedLocker);
 
@@ -195,9 +208,11 @@ class ReservationsControllerTestIT {
   void create_withRackOnlyAndSlotAvailable_thenReturnCreated() throws Exception {
     final ClassPathResource content = new ClassPathResource("mocks.requests/create-reservation-request-only-rackId.json");
     final UUID rackId = UUID.fromString("4cff63a5-74c9-4b0a-8ee1-3c9cad8a97bb");
-    final RackedLockerEntity rackedLocker1 = buildRackedLocker(UUID.randomUUID(), rackId);
-    final RackedLockerEntity rackedLocker2 = buildRackedLocker(UUID.randomUUID(), rackId);
-    final RackedLockerEntity rackedLocker3 = buildRackedLocker(UUID.randomUUID(), rackId);
+    final LocationEntity location = this.locationsRepository.saveAndFlush(buildLocation());
+
+    final RackedLockerEntity rackedLocker1 = buildRackedLocker(UUID.randomUUID(), rackId, location);
+    final RackedLockerEntity rackedLocker2 = buildRackedLocker(UUID.randomUUID(), rackId, location);
+    final RackedLockerEntity rackedLocker3 = buildRackedLocker(UUID.randomUUID(), rackId, location);
 
     final CachedFee fee = buildCachedFee();
 
@@ -257,35 +272,27 @@ class ReservationsControllerTestIT {
         .build();
   }
 
-  private static RackedLockerEntity buildRackedLocker(UUID lockerId, UUID rackId) {
+  private static RackedLockerEntity buildRackedLocker(UUID lockerId, UUID rackId, LocationEntity location) {
     return RackedLockerEntity
         .builder()
         .lockerId(lockerId)
         .rackId(rackId)
         .position(1)
         .rackStatus(RackStatus.ACTIVE)
-        .address("Cabildo # 123")
-        .city("Buenos Aires")
-        .country("ARGENTINA")
-        .zipCode("1000")
-        .lat(BigDecimal.ONE)
-        .lon(BigDecimal.ONE)
         .size(SMALL)
         .lockerStatus(AVAILABLE)
+        .location(location)
         .build();
   }
 
-  public static ReservationEntity buildReservationEntity(RackedLockerEntity locker, CachedFee fee) {
+  public static ReservationEntity buildReservationEntity(RackedLockerEntity locker, CachedFee fee, LocationEntity location) {
     return ReservationEntity
         .builder()
         .lockerId(locker.getLockerId())
         .rackId(locker.getRackId())
         .position(locker.getPosition())
+        .location(location)
         .status(ReservationStatus.ACTIVE)
-        .address(locker.getAddress())
-        .city(locker.getCity())
-        .country(locker.getCountry())
-        .zipCode(locker.getZipCode())
         .startDate(Instant.parse("2024-06-01T10:00:00Z"))
         .endDate(Instant.parse("2024-06-01T12:00:00Z"))
         .userId(UUID.randomUUID())
@@ -298,6 +305,18 @@ class ReservationsControllerTestIT {
     this.redisTemplate
         .opsForValue()
         .set(String.format(REDIS_FEE_KEY, fee.country(), fee.lockerSize()), this.objectMapper.writeValueAsString(fee));
+  }
+
+  private static LocationEntity buildLocation() {
+    return LocationEntity
+        .builder()
+        .address("Cabildo # 123")
+        .city("Buenos Aires")
+        .country("ARGENTINA")
+        .zipCode("1000")
+        .lat(BigDecimal.ONE)
+        .lon(BigDecimal.ONE)
+        .build();
   }
 }
 
