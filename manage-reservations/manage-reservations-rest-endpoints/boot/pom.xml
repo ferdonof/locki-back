@@ -28,11 +28,20 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
         </dependency>
+
         <dependency>
             <groupId>com.ferdonof</groupId>
             <artifactId>manage-reservations-rest-endpoints-reservations-rest-endpoints</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+
+        <dependency>
+            <groupId>com.ferdonof</groupId>
+            <artifactId>manage-reservations-infrastructure-consumers-locations-consumer</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>
