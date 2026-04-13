@@ -310,6 +310,7 @@ class ReservationsControllerTestIT {
   private static LocationEntity buildLocation() {
     return LocationEntity
         .builder()
+        .locationId(UUID.randomUUID())
         .address("Cabildo # 123")
         .city("Buenos Aires")
         .country("ARGENTINA")
