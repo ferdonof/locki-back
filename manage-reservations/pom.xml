@@ -17,6 +17,7 @@
         <module>manage-reservations-domain</module>
         <module>manage-reservations-infrastructure</module>
         <module>manage-reservations-rest-endpoints</module>
+        <module>manage-reservations-starter</module>
     </modules>
 
     <properties>

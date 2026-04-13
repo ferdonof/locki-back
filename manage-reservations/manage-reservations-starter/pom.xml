@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.ferdonof</groupId>
-        <artifactId>manage-reservations-rest-endpoints</artifactId>
+        <artifactId>manage-reservations</artifactId>
         <version>0.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>manage-reservations-rest-endpoints-boot</artifactId>
+    <artifactId>manage-reservations-starter</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

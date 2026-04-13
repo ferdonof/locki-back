@@ -2,7 +2,7 @@ package com.ferdonof.locki.controllers;
 
 import static com.ferdonof.locki.lockers.enums.LockerSize.SMALL;
 import static com.ferdonof.locki.lockers.enums.LockerStatus.AVAILABLE;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -101,7 +101,7 @@ class ReservationsControllerTestIT {
 
   @Test
   void create_whenRequestIsValid_thenReturnsCreated() throws Exception {
-    final ClassPathResource content = new ClassPathResource("mocks.requests/create-reservation-request.json");
+    final ClassPathResource content = new ClassPathResource("mocks/requests/create-reservation-request.json");
     final UUID lockerId = UUID.fromString("82b25906-2166-4cd0-8c6a-607d209d8b31");
     final UUID rackId = UUID.fromString("259f0b04-ca24-4bca-906a-10c813518e21");
 
@@ -141,7 +141,7 @@ class ReservationsControllerTestIT {
 
   @Test
   void create_whenRequestIsValidAndSlotIsUnavailable_thenReturnConflict() throws Exception {
-    final ClassPathResource content = new ClassPathResource("mocks.requests/create-reservation-request.json");
+    final ClassPathResource content = new ClassPathResource("mocks/requests/create-reservation-request.json");
     final UUID lockerId = UUID.fromString("82b25906-2166-4cd0-8c6a-607d209d8b31");
     final UUID rackId = UUID.fromString("259f0b04-ca24-4bca-906a-10c813518e21");
     final LocationEntity location = this.locationsRepository.saveAndFlush(buildLocation());
@@ -167,7 +167,7 @@ class ReservationsControllerTestIT {
 
   @Test
   void create_whenRequestIsValidAndFeeIsNotCached_thenReturnNotFound() throws Exception {
-    final ClassPathResource content = new ClassPathResource("mocks.requests/create-reservation-request.json");
+    final ClassPathResource content = new ClassPathResource("mocks/requests/create-reservation-request.json");
     final UUID lockerId = UUID.fromString("82b25906-2166-4cd0-8c6a-607d209d8b31");
     final UUID rackId = UUID.fromString("259f0b04-ca24-4bca-906a-10c813518e21");
 
@@ -188,7 +188,7 @@ class ReservationsControllerTestIT {
 
   @Test
   void create_whenRequestIsValidRackedLockerNotExists_thenReturnNotFound() throws Exception {
-    final ClassPathResource content = new ClassPathResource("mocks.requests/create-reservation-request.json");
+    final ClassPathResource content = new ClassPathResource("mocks/requests/create-reservation-request.json");
 
     final CachedFee fee = buildCachedFee();
 
@@ -206,7 +206,7 @@ class ReservationsControllerTestIT {
 
   @Test
   void create_withRackOnlyAndSlotAvailable_thenReturnCreated() throws Exception {
-    final ClassPathResource content = new ClassPathResource("mocks.requests/create-reservation-request-only-rackId.json");
+    final ClassPathResource content = new ClassPathResource("mocks/requests/create-reservation-request-only-rackId.json");
     final UUID rackId = UUID.fromString("4cff63a5-74c9-4b0a-8ee1-3c9cad8a97bb");
     final LocationEntity location = this.locationsRepository.saveAndFlush(buildLocation());
 
@@ -246,7 +246,7 @@ class ReservationsControllerTestIT {
 
   @Test
   void execute_withRackOnlyAndLockerNotExists_thenReturnNotFound() throws Exception {
-    final ClassPathResource content = new ClassPathResource("mocks.requests/create-reservation-request-only-rackId.json");
+    final ClassPathResource content = new ClassPathResource("mocks/requests/create-reservation-request-only-rackId.json");
 
     final CachedFee fee = buildCachedFee();
 
