@@ -36,23 +36,26 @@ public class LocationEntity implements Serializable {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
 
-  @NotEmpty
+  @NotNull(message = "locationId cannot be null")
+  private UUID locationId;
+
+  @NotEmpty(message = "address cannot be empty")
   private String address;
 
-  @NotEmpty
+  @NotEmpty(message = "city cannot be empty")
   private String city;
 
-  @NotEmpty
+  @NotEmpty(message = "country cannot be empty")
   private String country;
 
-  @NotEmpty
+  @NotEmpty(message = "zipCode cannot be empty")
   private String zipCode;
 
-  @NotNull
+  @NotNull(message = "lat cannot be null")
   @Column(precision = 12, scale = 6)
   private BigDecimal lat;
 
-  @NotNull
+  @NotNull(message = "lon cannot be null")
   @Column(precision = 12, scale = 6)
   private BigDecimal lon;
 
