@@ -1,0 +1,103 @@
+version: '3.8'
+
+services:
+  # PostgreSQL para manage-administration
+  postgres-admin:
+    image: postgres:15-alpine
+    container_name: locki-postgres-admin
+    environment:
+      POSTGRES_USER: locki
+      POSTGRES_PASSWORD: locki
+      POSTGRES_DB: locki-admin
+    ports:
+      - "5450:5432"
+    volumes:
+      - postgres-admin-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U locki"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - locki-network
+
+  # PostgreSQL para manage-reservations
+  postgres-reservations:
+    image: postgres:15-alpine
+    container_name: locki-postgres-reservations
+    environment:
+      POSTGRES_USER: locki
+      POSTGRES_PASSWORD: locki
+      POSTGRES_DB: locki-reservations
+    ports:
+      - "5460:5432"
+    volumes:
+      - postgres-reservations-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U locki"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - locki-network
+
+  # Locki Administration Service
+  locki-admin:
+    build:
+      context: .
+      dockerfile: ./manage-administration/Dockerfile
+    container_name: locki-admin
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-admin:5432/locki-admin
+      SPRING_DATASOURCE_USERNAME: locki
+      SPRING_DATASOURCE_PASSWORD: locki
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+    depends_on:
+      postgres-admin:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - locki-network
+    restart: unless-stopped
+
+  # Locki Reservations Service
+  locki-reservations:
+    build:
+      context: .
+      dockerfile: ./manage-reservations/Dockerfile
+    container_name: locki-reservations
+    ports:
+      - "8081:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-reservations:5432/locki-reservations
+      SPRING_DATASOURCE_USERNAME: locki
+      SPRING_DATASOURCE_PASSWORD: locki
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+    depends_on:
+      postgres-reservations:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - locki-network
+    restart: unless-stopped
+
+volumes:
+  postgres-admin-data:
+  postgres-reservations-data:
+
+networks:
+  locki-network:
+    driver: bridge
+
